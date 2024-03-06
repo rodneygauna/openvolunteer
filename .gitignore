@@ -164,3 +164,4 @@ secrets/postgres_user.txt
 secrets/postgres_password.txt
 secrets/mail_user.txt
 secrets/mail_password.txt
+secrets/secretkey.txt

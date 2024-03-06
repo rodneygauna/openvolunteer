@@ -16,6 +16,9 @@ with open(os.environ['MAIL_USER_FILE'], encoding='utf-8') as f:
 with open(os.environ['MAIL_PASSWORD_FILE'], encoding='utf-8') as f:
     _mail_pass = f.read()
 
+with open(os.environ['SECRET_KEY_FILE'], encoding='utf-8') as f:
+    _secret_key = f.read()
+
 
 class BaseConfig(object):
     """Base configuration for the application."""
@@ -30,7 +33,6 @@ class BaseConfig(object):
     MAIL_PORT = os.environ['MAIL_PORT']
     MAIL_USE_TLS = os.environ['MAIL_USE_TLS']
     MAIL_USE_SSL = os.environ['MAIL_USE_SSL']
-    MAIL_USERNAME = 'rodneygauna@gmail.com'
-    MAIL_PASSWORD = 'password'
-    # MAIL_USERNAME = _mail_user
-    # MAIL_PASSWORD = _mail_pass
+    MAIL_USERNAME = _mail_user
+    MAIL_PASSWORD = _mail_pass
+    SECRET_KEY = _secret_key
