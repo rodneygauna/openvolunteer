@@ -1,3 +1,4 @@
+"""Create the database and the tables."""
 import time
 from app import db, app
 
