@@ -14,9 +14,12 @@
   </head>
   <body>
     <div class="container">
-      <br />
-      <!-- child template -->
-      {% block content %}{% endblock %}
+      <main>
+        <!-- Flash - Start -->
+        {% include 'flash.html' %}
+        <!-- Flash - End -->
+        {% block content %}{% endblock content %}
+      </main>
     </div>
     <!-- scripts -->
     <script

@@ -26,8 +26,8 @@ from users.forms import (
     ChangePasswordForm,
     ShortCodeForm,
 )
-from models import User
 from app import db, mail
+from .models import User
 
 
 # Blueprint Configuration

@@ -14,7 +14,7 @@ db = SQLAlchemy(app)
 
 
 # Importing models after db is defined
-from models import *
+from users.models import *
 
 
 # Flask-Login configuration
@@ -30,9 +30,11 @@ mail.init_app(app)
 
 # Flask Blueprints - Imports
 from users.views import users_bp
+from core.views import core_bp
 
 # Flask Blueprints - Register
 app.register_blueprint(users_bp)
+app.register_blueprint(core_bp)
 
 
 # Main run script

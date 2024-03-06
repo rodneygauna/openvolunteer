@@ -4,7 +4,7 @@ from app import db, app
 
 time.sleep(10)
 
-
+# Import the specific exception class
 with app.app_context():
     try:
         db.create_all()

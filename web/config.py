@@ -29,10 +29,10 @@ class BaseConfig(object):
     SQLALCHEMY_DATABASE_URI = (
         f'postgresql://{DB_USER}:{DB_PASS}@postgres:{DB_PORT}/{DB_NAME}'
     )
-    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_SERVER = os.environ['MAIL_SERVER']
     MAIL_PORT = os.environ['MAIL_PORT']
-    MAIL_USE_TLS = os.environ['MAIL_USE_TLS']
-    MAIL_USE_SSL = os.environ['MAIL_USE_SSL']
+    MAIL_USE_TLS = os.environ['MAIL_USE_TLS'].lower() == 'true'
+    MAIL_USE_SSL = os.environ['MAIL_USE_SSL'].lower() == 'true'
     MAIL_USERNAME = _mail_user
     MAIL_PASSWORD = _mail_pass
     SECRET_KEY = _secret_key
