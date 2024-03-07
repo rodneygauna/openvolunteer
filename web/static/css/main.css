@@ -4,6 +4,11 @@
 .top-alert {
   position: fixed;
   top: 0;
-  width: 100%;
+  /* center the banner */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 800px;
+  padding: 10px;
   z-index: 1;
 }
