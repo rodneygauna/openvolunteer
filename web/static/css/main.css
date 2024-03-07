@@ -1,14 +1,21 @@
 /* custom styles */
 
-/* Alert Banner */
-.top-alert {
+/* Alert Banner Container */
+.alert-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: fixed;
   top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+/* Alert Banner */
+.top-alert {
   /* center the banner */
-  left: 50%;
-  transform: translateX(-50%);
   width: 80%;
   max-width: 800px;
   padding: 10px;
-  z-index: 1;
+  margin-top: 10px;
 }
