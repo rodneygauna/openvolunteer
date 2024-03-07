@@ -21,6 +21,9 @@ class EventForm(FlaskForm):
                                  default="UTC", validators=[DataRequired()])
     title = TextAreaField("Title", validators=[DataRequired()])
     description = TextAreaField("Description")
+    max_attendees = SelectField("Max Attendees",
+                                choices=[(i, i) for i in range(1, 21)],
+                                default=10, coerce=int)
     event_status = SelectField("Event Status", choices=EVENT_STATUS)
     submit = SubmitField("Save Event")
 

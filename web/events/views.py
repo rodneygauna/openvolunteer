@@ -29,6 +29,7 @@ def view_events():
                                   Event.start_date,
                                   Event.start_time,
                                   Event.title,
+                                  Event.max_attendees,
                                   Event.start_timezone,
                                   Event.event_status)\
         .join(User, Event.event_leader_id == User.id)\
@@ -57,6 +58,7 @@ def event(event_id):
                                      Event.start_timezone,
                                      Event.title,
                                      Event.description,
+                                     Event.max_attendees,
                                      Event.event_status,
                                      Event.updated_date,
                                      User.first_name,
@@ -117,6 +119,7 @@ def create_event():
             start_timezone=form.start_timezone.data,
             title=form.title.data,
             description=form.description.data,
+            max_attendees=form.max_attendees.data,
             event_status="open",
             created_by=current_user.id)
 
@@ -153,6 +156,7 @@ def edit_event(event_id):
         event.start_timezone = form.start_timezone.data
         event.title = form.title.data
         event.description = form.description.data
+        event.max_attendees = form.max_attendees.data
         event.event_status = form.event_status.data
         event.updated_date = datetime.utcnow()
         event.updated_by = current_user.id
@@ -167,6 +171,7 @@ def edit_event(event_id):
         form.start_timezone.data = event.start_timezone
         form.title.data = event.title
         form.description.data = event.description
+        form.max_attendees.data = event.max_attendees
         form.event_status.data = event.event_status
 
     return render_template(
