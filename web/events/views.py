@@ -60,17 +60,19 @@ def event(event_id):
     """View an event's details"""
 
     event = Event.query.get_or_404(event_id)
-    event_details = db.session.query(Event.id,
-                                     Event.start_date,
-                                     Event.start_time,
-                                     Event.start_timezone,
-                                     Event.title,
-                                     Event.description,
-                                     Event.max_attendees,
-                                     Event.event_status,
-                                     Event.updated_date,
-                                     User.first_name,
-                                     User.last_name)\
+    event_details = db.session.query(
+        Event.id,
+        Event.start_date,
+        Event.start_time,
+        Event.start_timezone,
+        Event.title,
+        Event.description,
+        Event.max_attendees,
+        Event.event_status,
+        Event.updated_date,
+        User.first_name,
+        User.last_name
+        )\
         .join(User, Event.event_leader_id == User.id)\
         .filter(Event.id == event_id).first()
     event_roster = db.session.query(EventAttendee.id,
