@@ -15,6 +15,8 @@ db = SQLAlchemy(app)
 
 # Importing models after db is defined
 from users.models import *
+from events.models import *
+from notifications.models import *
 
 
 # Flask-Login configuration
