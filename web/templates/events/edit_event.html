@@ -1,0 +1,19 @@
+{% extends "_base.html" %} {% block content %}
+<h1>Edit Event</h1>
+<!-- Start Create Event -->
+<form method="POST">
+  {{ form.hidden_tag() }}
+  <div class="row">
+    <div class="col-xl-6">
+      {{ form.start_date.label }}{{ form.start_date }} {{ form.start_time.label
+      }}{{ form.start_time }} {{ form.start_timezone.label }}{{
+      form.start_timezone }} {{ form.title.label }}{{ form.title }} {{
+      form.description.label }}{{ form.description }} {{ form.event_status.label
+      }}{{ form.event_status }}
+    </div>
+  </div>
+  <br />
+  {{form.submit(class="btn")}}
+</form>
+<!-- End Create Event -->
+{% endblock %}

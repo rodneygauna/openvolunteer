@@ -14,6 +14,7 @@ class Event(db.Model):
     event_leader_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     title = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=False)
+    max_attendees = db.Column(db.Integer, default=0)
     start_date = db.Column(db.Date, nullable=False)
     start_time = db.Column(db.Time, nullable=False)
     start_timezone = db.Column(db.Text, nullable=False)
@@ -23,16 +24,6 @@ class Event(db.Model):
         db.Integer, db.ForeignKey("users.id"), nullable=False)
     updated_date = db.Column(db.DateTime)
     updated_by = db.Column(db.Integer, db.ForeignKey("users.id"))
-
-    def __init__(self, title, description, start_date, start_time,
-                 start_timezone, created_by):
-        """Initializes the event"""
-        self.title = title
-        self.description = description
-        self.start_date = start_date
-        self.start_time = start_time
-        self.start_timezone = start_timezone
-        self.created_by = created_by
 
 
 # Model - Event Attendee
@@ -53,9 +44,3 @@ class EventAttendee(db.Model):
     updated_date = db.Column(db.DateTime)
     updated_by = db.Column(db.Integer, db.ForeignKey("users.id"))
 
-    def __init__(self, event_id, attendee_id, status, created_by):
-        """Initializes the event attendee"""
-        self.event_id = event_id
-        self.attendee_id = attendee_id
-        self.status = status
-        self.created_by = created_by

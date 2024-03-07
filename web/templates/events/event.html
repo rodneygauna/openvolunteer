@@ -1,0 +1,91 @@
+{% extends "_base.html" %} {% block content %}
+<!-- Event Info Start -->
+<section>
+  <div class="container">
+    <!-- Crew Controls Start -->
+    {% if current_user_in_roster == True %} {% if current_user_canceled == True
+    %}
+    <a
+      href="{{ url_for('events.edit_event_signup', event_id=event.id) }}"
+      class="btn"
+      >Re-Sign Up</a
+    >
+    {% elif current_user_canceled == False %}
+    <a
+      href="{{ url_for('events.edit_event_signup', event_id=event.id) }}"
+      class="btn"
+      >Update Sign Up Info</a
+    >
+    <a
+      href="{{ url_for('events.cancel_event_signup', event_id=event.id) }}"
+      class="btn-outline"
+      >Cancel Sign Up</a
+    >
+    {% endif %} {% elif current_user_in_roster == False and
+    current_user_is_leader == False %}
+    <a
+      href="{{ url_for('events.event_signup', event_id=event.id) }}"
+      class="btn"
+      >Sign Up For Event</a
+    >
+    {% endif %}
+    <!-- Crew Controls End -->
+    <!-- Leader Controls Start -->
+    {% if current_user_is_leader %}
+    <div>
+      <a
+        href="{{ url_for('events.edit_event', event_id=event.id) }}"
+        class="btn"
+        >Edit Event</a
+      >
+    </div>
+    {% else %} {% endif %}
+    <!-- Leader Controls End -->
+    <div class="row">
+      <div class="col-lg-4">
+        <div>
+          <div>
+            <div>
+              <h3 class="title">Event Details</h3>
+              <div>
+                <ul>
+                  <li>
+                    <span>Event Date:</span>
+                    <span
+                      >{{ event_details.start_date.strftime('%A, %B %d, %Y')
+                      }}</span
+                    >
+                  </li>
+                  <li>
+                    <span>Event Time:</span>
+                    <span
+                      >{{ event_details.start_time.strftime('%I:%M %p') }} {{
+                      event_details.start_timezone }}</span
+                    >
+                  </li>
+                  <li>
+                    <span>Event Organizer:</span>
+                    <span
+                      >{{ event_details.first_name }} {{ event_details.last_name
+                      }}</span
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Event Roster Start -->
+    <div class="row">
+      <h3 class="title">Crew Roster</h3>
+      {% for attendee in event_roster %} {{ attendee.first_name }} {{
+      attendee.last_name }} {{ attendee.attendee_status }}<br />
+      {% endfor %}
+    </div>
+    <!-- Event Roster End-->
+  </div>
+</section>
+<!-- Event Info End -->
+{% endblock content %}
