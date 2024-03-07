@@ -84,9 +84,9 @@ def event(event_id):
         current_user_is_leader = True
 
     for attendee in event_roster:
-        if attendee.user_id == current_user.id:
+        if attendee.attendee_id == current_user.id:
             current_user_in_roster = True
-            if attendee.player_status == "canceled":
+            if attendee.attendee_status == "canceled":
                 current_user_canceled = True
 
     return render_template(
@@ -195,9 +195,9 @@ def event_signup(event_id):
     # Count how many active attendees are in the roster
     roster_active_count = EventAttendee.query.filter_by(
         event_id=event_id).filter(
-        or_(EventAttendee.player_status == "pending",
-            EventAttendee.player_status == "accepted",
-            EventAttendee.player_status == "confirmed")).count()
+        or_(EventAttendee.attendee_status == "pending",
+            EventAttendee.attendee_status == "accepted",
+            EventAttendee.attendee_status == "confirmed")).count()
     # Max number of attendees allowed in the event
     max_allowed = event.max_attendees
     if roster_active_count >= max_allowed:
@@ -224,7 +224,7 @@ def event_signup(event_id):
         db.session.add(event_signup)
         db.session.commit()
         flash("You have signed up for the event.", "success")
-        return redirect(url_for("Event.event", event_id=event_id))
+        return redirect(url_for("events.event", event_id=event_id))
 
     return render_template("events/event_signup.html",
                            title="OpenVolunteer - Event Signup",
@@ -260,7 +260,7 @@ def edit_event_signup(event_id):
 
         db.session.commit()
         flash("You have updated your event signup.", "success")
-        return redirect(url_for("Event.event", event_id=event_id))
+        return redirect(url_for("events.event", event_id=event_id))
 
     elif request.method == "GET":
         form.comments.data = event_signup.comments
@@ -298,4 +298,4 @@ def cancel_event_signup(event_id):
     else:
         flash("You are not signed up for this event.", "danger")
 
-    return redirect(url_for("event.event", event_id=event_id))
+    return redirect(url_for("events.event", event_id=event_id))

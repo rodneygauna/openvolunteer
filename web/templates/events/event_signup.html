@@ -1,0 +1,25 @@
+{% extends "_base.html" %} {% block content %}
+<!-- Sign Up Start -->
+<section>
+  <div class="container">
+    <div>
+      <div>
+        <h2>Event Sign Up</h2>
+        <div>
+          <!-- Start Form -->
+          <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="row">
+              <div>{{ form.comments.label }} {{ form.comments }}</div>
+            </div>
+            <br />
+            {{form.submit(class="btn")}}
+          </form>
+          <!-- End Form -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Sign Up End -->
+{% endblock %}
