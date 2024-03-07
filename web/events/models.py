@@ -17,7 +17,7 @@ class Event(db.Model):
     start_date = db.Column(db.Date, nullable=False)
     start_time = db.Column(db.Time, nullable=False)
     start_timezone = db.Column(db.Text, nullable=False)
-    event_status = db.Column(db.String(255), default="active")
+    event_status = db.Column(db.String(255), default="open")
     created_date = db.Column(db.DateTime, default=datetime.utcnow)
     created_by = db.Column(
         db.Integer, db.ForeignKey("users.id"), nullable=False)
@@ -44,7 +44,8 @@ class EventAttendee(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     event_id = db.Column(db.Integer, db.ForeignKey("events.id"))
     attendee_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    status = db.Column(db.String(255), nullable=False, default="pending")
+    attendee_status = db.Column(db.String(255), nullable=False,
+                                default="pending")
     comments = db.Column(db.Text)
     created_date = db.Column(db.DateTime, default=datetime.utcnow)
     created_by = db.Column(
