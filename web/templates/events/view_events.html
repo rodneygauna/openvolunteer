@@ -35,6 +35,12 @@
                 <div class="tournament__list-name">
                   <h5 class="team-name">{{ event.title }}</h5>
                 </div>
+                <div>
+                  <span
+                    >{{ event.attendee_count }} / {{ event.max_attendees
+                    }}</span
+                  >
+                </div>
                 <div class="tournament__list-time">
                   <span class="event_date" style="display: none"
                     >{{ event.start_date.strftime('%A, %B %d, %Y') }}</span

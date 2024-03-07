@@ -24,20 +24,28 @@ def view_events():
 
     today = datetime.now().date()
     page = request.args.get('page', 1, type=int)
-    event_info = db.session.query(Event.id,
-                                  Event.event_leader_id,
-                                  Event.start_date,
-                                  Event.start_time,
-                                  Event.title,
-                                  Event.max_attendees,
-                                  Event.start_timezone,
-                                  Event.event_status)\
+    event_info = db.session.query(
+        Event.id,
+        Event.start_date,
+        Event.start_time,
+        Event.start_timezone,
+        Event.title,
+        Event.description,
+        Event.max_attendees,
+        Event.event_status,
+        Event.updated_date,
+        db.func.count(EventAttendee.attendee_id).label("attendee_count"),
+    )\
         .join(User, Event.event_leader_id == User.id)\
-        .filter(Event.start_date >= today)\
-        .filter(Event.event_status == "open")\
-        .order_by(Event.start_date.asc())\
-        .order_by(Event.start_time.asc())\
-        .paginate(page=page, per_page=10)
+        .outerjoin(EventAttendee, db.and_(
+            Event.id == EventAttendee.event_id,
+            EventAttendee.attendee_status.in_(
+                ["pending", "accepted", "standby", "confirmed"]
+            )))\
+        .filter(Event.start_date >= today, Event.event_status == "open")\
+        .group_by(Event.id)\
+        .order_by(Event.start_date.asc(), Event.start_time.asc())\
+        .paginate(page=page, per_page=5)
 
     return render_template(
         "events/view_events.html",
