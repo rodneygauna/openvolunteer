@@ -41,8 +41,8 @@ services:
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
       MAIL_SERVER: smtp.gmail.com
       MAIL_PORT: 465
-      MAIL_USE_TLS: False
-      MAIL_USE_SSL: True
+      MAIL_USE_TLS: "False"
+      MAIL_USE_SSL: "True"
       MAIL_USER_FILE: /run/secrets/mail_user
       MAIL_PASSWORD_FILE: /run/secrets/mail_password
       SECRET_KEY_FILE: /run/secrets/secretkey
