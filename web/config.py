@@ -1,38 +1,26 @@
 """
 Basic configuration file for the application.
+Variables are read from the environment variables from docker-compose.yml
 """
 import os
 
 
-with open(os.environ['POSTGRES_USER_FILE'], encoding='utf-8') as f:
-    _db_user = f.read()
-
-with open(os.environ['POSTGRES_PASSWORD_FILE'], encoding='utf-8') as f:
-    _db_pass = f.read()
-
-with open(os.environ['MAIL_USER_FILE'], encoding='utf-8') as f:
-    _mail_user = f.read()
-
-with open(os.environ['MAIL_PASSWORD_FILE'], encoding='utf-8') as f:
-    _mail_pass = f.read()
-
-with open(os.environ['SECRET_KEY_FILE'], encoding='utf-8') as f:
-    _secret_key = f.read()
-
-
 class BaseConfig(object):
     """Base configuration for the application."""
+    # Database configuration
     DB_NAME = os.environ['POSTGRES_DB']
-    DB_USER = _db_user
-    DB_PASS = _db_pass
+    DB_USER = os.environ['POSTGRES_USER']
+    DB_PASS = os.environ['POSTGRES_PASSWORD']
     DB_PORT = os.environ['DATABASE_PORT']
     SQLALCHEMY_DATABASE_URI = (
         f'postgresql://{DB_USER}:{DB_PASS}@postgres:{DB_PORT}/{DB_NAME}'
     )
+    # Flask-Mail configuration
     MAIL_SERVER = os.environ['MAIL_SERVER']
     MAIL_PORT = os.environ['MAIL_PORT']
     MAIL_USE_TLS = os.environ['MAIL_USE_TLS'].lower() == 'true'
     MAIL_USE_SSL = os.environ['MAIL_USE_SSL'].lower() == 'true'
-    MAIL_USERNAME = _mail_user
-    MAIL_PASSWORD = _mail_pass
-    SECRET_KEY = _secret_key
+    MAIL_USERNAME = os.environ['MAIL_USER']
+    MAIL_PASSWORD = os.environ['MAIL_PASSWORD']
+    # Encryption key
+    SECRET_KEY = os.environ['SECRET_KEY']

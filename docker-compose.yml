@@ -1,17 +1,5 @@
 version: "3.8"
 
-secrets:
-  postgres_user:
-    file: ./secrets/postgres_user.txt
-  postgres_password:
-    file: ./secrets/postgres_password.txt
-  mail_user:
-    file: ./secrets/mail_user.txt
-  mail_password:
-    file: ./secrets/mail_password.txt
-  secretkey:
-    file: ./secrets/secretkey.txt
-
 services:
   nginx:
     restart: always
@@ -28,24 +16,18 @@ services:
     build: ./web
     links:
       - postgres:postgres
-    secrets:
-      - postgres_user
-      - postgres_password
-      - mail_user
-      - mail_password
-      - secretkey
     environment:
-      POSTGRES_DB: openvolunteer-db
+      POSTGRES_DB: ${POSTGRES_DB}
       DATABASE_PORT: 5432
-      POSTGRES_USER_FILE: /run/secrets/postgres_user
-      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
-      MAIL_SERVER: smtp.gmail.com
-      MAIL_PORT: 465
-      MAIL_USE_TLS: "False"
-      MAIL_USE_SSL: "True"
-      MAIL_USER_FILE: /run/secrets/mail_user
-      MAIL_PASSWORD_FILE: /run/secrets/mail_password
-      SECRET_KEY_FILE: /run/secrets/secretkey
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      MAIL_SERVER: ${MAIL_SERVER}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USE_TLS: ${MAIL_USE_TLS}
+      MAIL_USE_SSL: ${MAIL_USE_SSL}
+      MAIL_USER: ${MAIL_USER}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
     expose:
       - "8000"
     depends_on:
@@ -59,13 +41,10 @@ services:
     image: postgres:latest
     volumes:
       - db-data:/var/lib/postgresql/data
-    secrets:
-      - postgres_user
-      - postgres_password
     environment:
-      POSTGRES_DB: openvolunteer-db
-      POSTGRES_USER_FILE: /run/secrets/postgres_user
-      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     expose:
       - "5432"
     ports:
