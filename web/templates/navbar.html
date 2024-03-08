@@ -9,6 +9,7 @@
     <i class="fa fa-bars"></i>
   </a>
   <div class="navbar-nav align-items-center ms-auto">
+    {% if current_user.is_authenticated %}
     <div class="nav-item dropdown">
       <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
         <img
@@ -28,5 +29,12 @@
         <a href="#" class="dropdown-item">Log Out</a>
       </div>
     </div>
+    {% else %}
+    <a href="{{ url_for('users.login') }}" class="nav-item nav-link"
+      ><i class="fa fa-sign-in-alt me-2"></i>Login</a
+    >
+    <a href="{{ url_for('users.register_user') }}" class="nav-item nav-link"
+      ><i class="fa fa-user-plus me-2"></i>Register</a
+    >
   </div>
 </nav>
