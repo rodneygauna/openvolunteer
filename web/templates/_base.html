@@ -1,22 +1,61 @@
-<html lang="en" dir="ltr">
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
     <title>{{ title }}</title>
-    {% include 'favicon.html' %} {% include 'styles.html' %}
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="" name="keywords" />
+    <meta content="" name="description" />
+
+    <!-- Favicon -->
+    {% include 'favicon.html' %}
+
+    <!-- Google Web Fonts -->
+    {% include 'google-fonts.html' %}
+
+    <!-- Icon Font Stylesheet -->
+    {% include 'icon-font-stylesheet.html' %}
+
+    <!-- Stylesheets -->
+    {% include 'styles.html' %}
   </head>
+
   <body>
-    <div class="container">
-      <!-- Navbar - Start -->
-      {% include 'navigation.html' %}
-      <!-- Navbar - End -->
-      <main>
-        <!-- Flash - Start -->
+    <div class="container-xxl position-relative bg-white d-flex p-0">
+      <!-- Spinner Start -->
+      {% include 'spinner.html' %}
+      <!-- Spinner End -->
+
+      <!-- Sidebar Start -->
+      {% include 'sidebar.html' %}
+      <!-- Sidebar End -->
+
+      <!-- Content Start -->
+      <div class="content">
+        <!-- Navbar Start -->
+        {% include 'navbar.html' %}
+        <!-- Navbar End -->
+        <!-- Flash Start -->
         {% include 'flash.html' %}
-        <!-- Flash - End -->
-        {% block content %}{% endblock content %}
-      </main>
+        <!-- Flash End -->
+        <!-- Main Start -->
+        <div class="container-fluid pt-4 px-4">
+          {% block content %} {% endblock content %}
+        </div>
+        <!-- Main End -->
+
+        <!-- Footer Start -->
+        {% include 'footer.html' %}
+        <!-- Footer End -->
+      </div>
+      <!-- Content End -->
+
+      <!-- Back to Top -->
+      <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"
+        ><i class="bi bi-arrow-up"></i
+      ></a>
     </div>
+
     {% include 'javascript.html' %}
   </body>
 </html>
