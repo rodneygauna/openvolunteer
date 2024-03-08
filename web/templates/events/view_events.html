@@ -1,138 +1,112 @@
 {% extends "_base.html" %} {% block content %}
+<h1>Upcoming Events & Sign Up</h1>
+<div>
+  <a class="btn btn-primary" href="{{ url_for('events.create_event') }}"
+    >Create New Event</a
+  >
+</div>
 <!-- Event List Start -->
 <section>
-  <div class="container">
-    <div>
-      <div class="row align-items-end mb-60">
-        <div class="col-lg-8">
-          <div
-            class="section__title text-center text-lg-start title-shape-none"
-          >
-            <span class="sub-title tg__animate-text">Event List</span>
-            <h3 class="title">Active Events</h3>
-            <br />
-            <a href="{{ url_for('events.create_event') }}" class="tg-btn-1"
-              ><span>Create Event</span></a
-            >
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="section__title-link">
-            <a href="#">ADVANCE SEARCH</a>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <div class="tournament__list-item-wrapper">
-            <!-- Event Item Start -->
-            {% for event in event_info %}
-            <div
-              class="tournament__list-item wow fadeInUp"
-              data-wow-delay=".2s"
-            >
-              <div>
-                <div class="tournament__list-name">
-                  <h5 class="team-name">{{ event.title }}</h5>
-                </div>
-                <div>
-                  <span
-                    >{{ event.attendee_count }} / {{ event.max_attendees
-                    }}</span
-                  >
-                </div>
-                <div class="tournament__list-time">
-                  <span class="event_date" style="display: none"
-                    >{{ event.start_date.strftime('%A, %B %d, %Y') }}</span
-                  >
-                  <span class="event_time" style="display: none"
-                    >{{ event.start_time.strftime('%I:%M %p') }}</span
-                  >
-                  <span class="event_timezone" style="display: none"
-                    >{{ event.start_timezone }}</span
-                  >
-                  <i class="far fa-calendar-alt"></i>
-                  <span class="event_convertedDate"></span>
-                  <br />
-                  <i class="far fa-clock"></i>
-                  <span class="event_convertedTimeTz"></span>
-                </div>
-                <div class="tournament__list-live">
-                  <a href="{{ url_for('events.event', event_id=event.id) }}"
-                    ><i class="fas fa-skull-crossbones"></i> Sign Up</a
-                  >
-                </div>
-              </div>
-            </div>
-            {% endfor %}
-            <!-- Event Item End -->
-          </div>
-          <!-- Start Pagination-->
-          <div>
-            <div class="pagination__wrap">
-              <ul class="list-wrap d-flex flex-wrap justify-content-center">
-                {% if event_info.has_prev %}
-                <li>
-                  <a
-                    class="page-numbers"
-                    href="{{ url_for('events.view_events', page=event_info.prev_num) }}"
-                    ><<</a
-                  >
-                </li>
-                {% else %}
-                <li class="page-numbers disabled">
-                  <span class="page-numbers"><<</span>
-                </li>
-                {% endif %} {% for page_num in
-                event_info.iter_pages(left_edge=1, right_edge=1, left_current=2,
-                right_current=2) %} {% if page_num %} {% if event_info.page ==
-                page_num %}
-                <li>
-                  <span class="page-numbers current">{{ page_num }}</span>
-                </li>
-                {% else %}
-                <li>
-                  <a
-                    class="page-numbers"
-                    href="{{ url_for('events.view_events', page=page_num) }}"
-                    >{{ page_num }}</a
-                  >
-                </li>
-                {% endif %} {% else %}
-                <li>
-                  <span class="page-numbers">...</span>
-                </li>
-                {% endif %} {% endfor %} {% if event_info.has_next %}
-                <li>
-                  <a
-                    class="page-numbers"
-                    href="{{ url_for('events.view_events', page=event_info.next_num) }}"
-                    >>></a
-                  >
-                </li>
-                {% else %}
-                <li>
-                  <span class="page-numbers disabled">>></span>
-                </li>
-                {% endif %}
-              </ul>
-            </div>
-          </div>
-          <!-- End Pagination -->
-        </div>
-      </div>
-    </div>
+  {% for event in event_info %}
+  <!-- Event Item Start -->
+  <h6>
+    <a href="{{ url_for('events.event', event_id=event.id) }}"
+      >{{ event.title }}</a
+    >
+  </h6>
+  <p>{{ event.description }}</p>
+  <!-- Event Date/Time Converted Information Start-->
+  <div class="event__list-time">
+    <span class="event_date" style="display: none"
+      >{{ event.start_date.strftime('%A, %B %d, %Y') }}</span
+    >
+    <span class="event_time" style="display: none"
+      >{{ event.start_time.strftime('%I:%M %p') }}</span
+    >
+    <span class="event_timezone" style="display: none"
+      >{{ event.start_timezone }}</span
+    >
+    <span class="event_convertedDate"></span>
+    <br />
+    <span class="event_convertedTimeTz"></span>
+    <br />
   </div>
+  <!-- Event Date/Time Converted Information End-->
+  <p>{{ event.attendee_count }} / {{ event.max_attendees }}</p>
+  <a
+    class="btn btn-primary"
+    href="{{ url_for('events.event_signup', event_id=event.id) }}"
+    >Sign Up</a
+  >
+  <a
+    class="btn btn-secondary"
+    href="{{ url_for('events.event', event_id=event.id) }}"
+    >View Event Info</a
+  >
+  <br />
+  <br />
+  {% endfor %}
+  <!-- Event Item End -->
 </section>
 <!-- Event List End -->
-
+<!-- Start Pagination-->
+<div>
+  <div class="">
+    <ul class="d-flex flex-wrap justify-content-center">
+      {% if event_info.has_prev %}
+      <li>
+        <a
+          class="page-numbers"
+          href="{{ url_for('events.view_events', page=event_info.prev_num) }}"
+          ><<</a
+        >
+      </li>
+      {% else %}
+      <li class="page-numbers disabled">
+        <span class="page-numbers"><<</span>
+      </li>
+      {% endif %} {% for page_num in event_info.iter_pages(left_edge=1,
+      right_edge=1, left_current=2, right_current=2) %} {% if page_num %} {% if
+      event_info.page == page_num %}
+      <li>
+        <span class="page-numbers current">{{ page_num }}</span>
+      </li>
+      {% else %}
+      <li>
+        <a
+          class="page-numbers"
+          href="{{ url_for('events.view_events', page=page_num) }}"
+          >{{ page_num }}</a
+        >
+      </li>
+      {% endif %} {% else %}
+      <li>
+        <span class="page-numbers">...</span>
+      </li>
+      {% endif %} {% endfor %} {% if event_info.has_next %}
+      <li>
+        <a
+          class="page-numbers"
+          href="{{ url_for('events.view_events', page=event_info.next_num) }}"
+          >>></a
+        >
+      </li>
+      {% else %}
+      <li>
+        <span class="page-numbers disabled">>></span>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</div>
+<!-- End Pagination -->
 <!-- Convert Timezone -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.33/moment-timezone-with-data.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     // Get all the tournament__list-time elements
-    const eventElements = document.querySelectorAll(".tournament__list-time");
+    const eventElements = document.querySelectorAll(".event__list-time");
 
     // Iterate over each event and convert the date, time, and timezone
     eventElements.forEach(function (eventElement) {
@@ -145,11 +119,6 @@
         const date = dateElement.textContent;
         const time = timeTextElement.textContent;
         const timezone = timezoneElement.textContent;
-
-        // Print the extracted date, time, and timezone to the console for debugging
-        console.log("Extracted Date:", date);
-        console.log("Extracted Time:", time);
-        console.log("Extracted Timezone:", timezone);
 
         // Create a datetime string with a specific format for parsing
         const dateTimeString = `${date} ${time}`;
@@ -179,14 +148,6 @@
           convertedTimeTzElement.textContent = convertedDateTime
             .clone()
             .format("hh:mm A z");
-
-          // Print the converted date, time, and timezone to the console
-          console.log(
-            "Converted Date:",
-            convertedDateTime.format("dddd, MMMM D, YYYY")
-          );
-          console.log("Converted Time:", convertedDateTime.format("hh:mm A"));
-          console.log("Converted Timezone:", moment.tz.guess());
         } else {
           console.log("Invalid datetime format");
         }
