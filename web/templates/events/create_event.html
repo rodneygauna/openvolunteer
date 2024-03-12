@@ -1,20 +1,43 @@
 {% extends "_base.html" %} {% block content %}
-<h1>Create Event</h1>
-<!-- Start Create Event -->
-<form method="POST">
-  {{ form.hidden_tag() }}
-  <div class="row">
-    <div class="col-xl-6">
-      {{ form.start_date.label }}{{ form.start_date }} {{ form.start_time.label
-      }}{{ form.start_time }} {{ form.start_timezone.label }}{{
-      form.start_timezone }} {{ form.title.label }}{{ form.title }} {{
-      form.description.label }}{{ form.description }} {{
-      form.max_attendees.label }}{{ form.max_attendees }} {{
-      form.event_status.label }}{{ form.event_status }}
+<div class="container-fluid pt-4 px-4">
+  <div class="col-sm-12">
+    <div class="bg-light rounded h-100 p-4">
+      <h6 class="mb-4">Create Event</h6>
+      <!-- Start Create Event -->
+      <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+          {{ form.start_date.label(class="form-label") }}{{
+          form.start_date(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.start_time.label(class="form-label") }}{{
+          form.start_time(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.start_timezone.label(class="form-label") }}{{
+          form.start_timezone(class="form-select mb-3") }}
+        </div>
+        <div class="mb-3">
+          {{ form.title.label(class="form-label") }}{{
+          form.title(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.description.label(class="form-label") }}{{
+          form.description(class="form-control", style="height: 150px") }}
+        </div>
+        <div class="mb-3">
+          {{ form.max_attendees.label(class="form-label") }}{{
+          form.max_attendees(class="form-select mb-3") }}
+        </div>
+        <div class="mb-3">
+          {{ form.event_status.label(class="form-label") }}{{
+          form.event_status(class="form-select mb-3") }}
+        </div>
+        {{form.submit(class="btn btn-primary")}}
+      </form>
+      <!-- End Create Event -->
     </div>
   </div>
-  <br />
-  {{form.submit(class="btn")}}
-</form>
-<!-- End Create Event -->
+</div>
 {% endblock %}
