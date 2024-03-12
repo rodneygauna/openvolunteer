@@ -78,6 +78,7 @@ def update_notification(notification_id):
         notification.status = form.status.data
         notification.updated_by = current_user.id
         notification.updated_date = datetime.utcnow()
+        notification.updated_by = current_user.id
 
         db.session.commit()
 
