@@ -8,6 +8,11 @@
         ><i class="fa fa-home me-2"></i>Home</a
       >
       {% if current_user.is_authenticated %}
+      <a
+        href="{{ url_for('notifications.view_notifications') }}"
+        class="nav-item nav-link"
+        ><i class="fa fa-calendar me-2"></i>Notifications</a
+      >
       <a href="{{ url_for('events.view_events') }}" class="nav-item nav-link"
         ><i class="fa fa-calendar me-2"></i>Events</a
       >

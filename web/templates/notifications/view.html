@@ -1,0 +1,39 @@
+{% extends '_base.html' %}{% block content %}
+<div class="row g-4">
+  <div class="col-sm-12">
+    <div class="d-flex align-items-center justify-content-between mb-2">
+      <h6 class="mb-0">Notifications</h6>
+    </div>
+    <a
+      href="{{ url_for('notifications.create_notification') }}"
+      class="btn btn-primary mb-3"
+      >Create Notification</a
+    >
+    {% if n %} {% for n in notifications %}
+    <div class="d-flex border-bottom py-3">
+      <img
+        src="{{ url_for('static', filename='img/user.jpg') }}"
+        alt="#"
+        class="rounded-circle flex-shrink-0"
+        style="width: 40px; height: 40px"
+      />
+      <div class="w-100 ms-3">
+        <h6 class="mb-0">
+          <a
+            href="{{ url_for('notifications.view_notification', notification_id=n.id) }}"
+            >{{ n.title }}</a
+          >
+        </h6>
+        <div class="d-flex w-100 justify-content-between">
+          <small>{{ n.first_name }} {{ n.last_name }}</small>
+          <small>{{ n.created_date.strftime('%A, %B %d, %Y') }}</small>
+        </div>
+        <span>{{ n.message }}</span>
+      </div>
+    </div>
+    {% endfor %} {% else %}
+    <p>No active notifications at this time.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock content %}

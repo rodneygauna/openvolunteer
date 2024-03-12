@@ -1,0 +1,26 @@
+{% extends '_base.html' %}{% block content %}
+<div class="row g-4">
+  <div class="col-sm-7">
+    {{ notification.title }}
+    <br />
+    {{ notification.message }}
+  </div>
+  <div class="col-sm-5">
+    {{ notification.status }}
+    <br />
+    {{ notification.created_by_first_name }} {{
+    notification.created_by_last_name }} {{
+    notification.created_date.strftime('%A, %B %d, %Y') }} {% if
+    notification.updated_date %}
+    <br />
+    {{ notification.updated_by_first_name }} {{
+    notification.updated_by_last_name }} {{
+    notification.updated_date.strftime('%A, %B %d, %Y') }} {% endif %}
+  </div>
+  <a
+    href="{{ url_for('notifications.update_notification', notification_id=notification.id) }}"
+    class="btn btn-primary"
+    >Edit Notification</a
+  >
+</div>
+{% endblock content %}

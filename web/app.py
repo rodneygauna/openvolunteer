@@ -34,11 +34,13 @@ mail.init_app(app)
 from users.views import users_bp
 from core.views import core_bp
 from events.views import event_bp
+from notifications.views import notifications_bp
 
 # Flask Blueprints - Register
 app.register_blueprint(users_bp)
 app.register_blueprint(core_bp)
 app.register_blueprint(event_bp)
+app.register_blueprint(notifications_bp)
 
 
 # Main run script
