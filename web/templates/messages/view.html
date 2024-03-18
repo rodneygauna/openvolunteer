@@ -1,0 +1,87 @@
+{% extends '_base.html' %} {% block content %}
+<div class="row g-4">
+  <div class="col-sm-12">
+    <a href="{{ url_for('messages.send_message') }}" class="btn btn-primary"
+      >Send Message</a
+    >
+    <div class="h-100 bg-light rounded p-4">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h6 class="mb-0">Messages</h6>
+      </div>
+      {% if messages %} {% for m in messages %}
+      <div class="d-flex align-items-center border-bottom py-3">
+        <img
+          class="rounded-circle flex-shrink-0"
+          src="{{ url_for('static', filename='img/user.jpg') }}"
+          alt=""
+          style="width: 40px; height: 40px"
+        />
+        <div class="w-100 ms-3">
+          <div class="d-flex w-100 justify-content-between">
+            <h6 class="mb-0">{{ m.from_first_name }} {{ m.from_last_name }}</h6>
+            <small>{{ m.created_date.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+          </div>
+          <span>{{ m.message }}</span>
+        </div>
+      </div>
+      {% endfor %}
+      <!-- Start Pagination-->
+      <div>
+        <div class="">
+          <ul class="d-flex flex-wrap justify-content-center">
+            {% if messages.has_prev %}
+            <li>
+              <a
+                class="page-numbers"
+                href="{{ url_for('messages.view_messages', page=messages.prev_num) }}"
+                ><<</a
+              >
+            </li>
+            {% else %}
+            <li class="page-numbers disabled">
+              <span class="page-numbers"><<</span>
+            </li>
+            {% endif %} {% for page_num in messages.iter_pages(left_edge=1,
+            right_edge=1, left_current=2, right_current=2) %} {% if page_num %}
+            {% if messages.page == page_num %}
+            <li>
+              <span class="page-numbers current">{{ page_num }}</span>
+            </li>
+            {% else %}
+            <li>
+              <a
+                class="page-numbers"
+                href="{{ url_for('messages.view_messages', page=page_num) }}"
+                >{{ page_num }}</a
+              >
+            </li>
+            {% endif %} {% else %}
+            <li>
+              <span class="page-numbers">...</span>
+            </li>
+            {% endif %} {% endfor %} {% if messages.has_next %}
+            <li>
+              <a
+                class="page-numbers"
+                href="{{ url_for('messages.view_messages', page=messages.next_num) }}"
+                >>></a
+              >
+            </li>
+            {% else %}
+            <li>
+              <span class="page-numbers disabled">>></span>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+      <!-- End Pagination -->
+      {% else %}
+      <div class="d-flex w-100 justify-content-between">
+        <h6 class="mb-0">You have no messages.</h6>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock content %}

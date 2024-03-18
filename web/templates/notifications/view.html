@@ -31,7 +31,59 @@
         <span>{{ n.message }}</span>
       </div>
     </div>
-    {% endfor %} {% else %}
+    {% endfor %}
+    <!-- Start Pagination-->
+    <div>
+      <div class="">
+        <ul class="d-flex flex-wrap justify-content-center">
+          {% if notifications.has_prev %}
+          <li>
+            <a
+              class="page-numbers"
+              href="{{ url_for('notifications.view_notifications', page=notifications.prev_num) }}"
+              ><<</a
+            >
+          </li>
+          {% else %}
+          <li class="page-numbers disabled">
+            <span class="page-numbers"><<</span>
+          </li>
+          {% endif %} {% for page_num in notifications.iter_pages(left_edge=1,
+          right_edge=1, left_current=2, right_current=2) %} {% if page_num %} {%
+          if notifications.page == page_num %}
+          <li>
+            <span class="page-numbers current">{{ page_num }}</span>
+          </li>
+          {% else %}
+          <li>
+            <a
+              class="page-numbers"
+              href="{{ url_for('notifications.view_notifications', page=page_num) }}"
+              >{{ page_num }}</a
+            >
+          </li>
+          {% endif %} {% else %}
+          <li>
+            <span class="page-numbers">...</span>
+          </li>
+          {% endif %} {% endfor %} {% if notifications.has_next %}
+          <li>
+            <a
+              class="page-numbers"
+              href="{{ url_for('notifications.view_notifications', page=notifications.next_num) }}"
+              >>></a
+            >
+          </li>
+          {% else %}
+          <li>
+            <span class="page-numbers disabled">>></span>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+    <!-- End Pagination -->
+    {% else %}
     <p>No active notifications at this time.</p>
     {% endif %}
   </div>

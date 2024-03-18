@@ -1,7 +1,7 @@
 """Forms for the messages feature of the application."""
 # Imports
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectField
+from wtforms import TextAreaField, SubmitField, SelectField
 from wtforms.validators import DataRequired
 
 
@@ -9,5 +9,5 @@ from wtforms.validators import DataRequired
 class SendMessage(FlaskForm):
     """Send a message form"""
     message_to_id = SelectField("To", coerce=int, validators=[DataRequired()])
-    message = StringField("Message", validators=[DataRequired()])
+    message = TextAreaField("Message", validators=[DataRequired()])
     submit = SubmitField("Send")
