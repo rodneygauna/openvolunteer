@@ -96,9 +96,9 @@ def events_ics():
     for event in events:
         # Combine date and time into a single datetime object
         start_datetime = datetime.combine(event.start_date, event.start_time)
-        # start_datetime = pytz.timezone(event.start_timezone).localize(start_datetime)
+        start_datetime = pytz.timezone(event.start_timezone).localize(start_datetime)
         end_datetime = datetime.combine(event.end_date, event.end_time)
-        # end_datetime = pytz.timezone(event.start_timezone).localize(end_datetime)
+        end_datetime = pytz.timezone(event.start_timezone).localize(end_datetime)
 
         # Create an event
         ical_event = IcsEvent()
