@@ -109,7 +109,6 @@ def events_ics():
         ical_event.location = "Log into OpenVolunteer for location details"
         ical_event.created = event.created_date
         ical_event.last_modified = event.updated_date
-        ical_event.status = event.event_status
         ical_event.uid = str(event.id)
 
         # Add the event to the calendar
