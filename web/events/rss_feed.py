@@ -96,9 +96,9 @@ def events_ics():
     for event in events:
         # Combine date and time into a single datetime object
         start_datetime = datetime.combine(event.start_date, event.start_time)
-        start_datetime = pytz.timezone(event.start_timezone).localize(start_datetime)
+        # start_datetime = pytz.timezone(event.start_timezone).localize(start_datetime)
         end_datetime = datetime.combine(event.end_date, event.end_time)
-        end_datetime = pytz.timezone(event.start_timezone).localize(end_datetime)
+        # end_datetime = pytz.timezone(event.start_timezone).localize(end_datetime)
 
         # Create an event
         ical_event = IcsEvent()
@@ -107,7 +107,9 @@ def events_ics():
         ical_event.end = end_datetime
         ical_event.description = event.description
         ical_event.location = "Log into OpenVolunteer for location details"
-        ical_event.created = event.created_date.astimezone(pytz.utc)
+        ical_event.created = event.created_date
+        ical_event.last_modified = event.updated_date
+        ical_event.status = event.event_status
         ical_event.uid = str(event.id)
 
         # Add the event to the calendar
