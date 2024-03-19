@@ -29,6 +29,8 @@ def view_events():
         Event.start_date,
         Event.start_time,
         Event.start_timezone,
+        Event.end_date,
+        Event.end_time,
         Event.title,
         Event.description,
         Event.max_attendees,
@@ -65,6 +67,8 @@ def event(event_id):
         Event.start_date,
         Event.start_time,
         Event.start_timezone,
+        Event.end_date,
+        Event.end_time,
         Event.title,
         Event.description,
         Event.max_attendees,
@@ -127,6 +131,8 @@ def create_event():
             start_date=form.start_date.data,
             start_time=form.start_time.data,
             start_timezone=form.start_timezone.data,
+            end_date=form.end_date.data,
+            end_time=form.end_time.data,
             title=form.title.data,
             description=form.description.data,
             max_attendees=form.max_attendees.data,
@@ -164,6 +170,8 @@ def edit_event(event_id):
         event.start_date = form.start_date.data
         event.start_time = form.start_time.data
         event.start_timezone = form.start_timezone.data
+        event.end_date = form.end_date.data
+        event.end_time = form.end_time.data
         event.title = form.title.data
         event.description = form.description.data
         event.max_attendees = form.max_attendees.data
@@ -179,6 +187,8 @@ def edit_event(event_id):
         form.start_date.data = event.start_date
         form.start_time.data = event.start_time
         form.start_timezone.data = event.start_timezone
+        form.end_date.data = event.end_date
+        form.end_time.data = event.end_time
         form.title.data = event.title
         form.description.data = event.description
         form.max_attendees.data = event.max_attendees

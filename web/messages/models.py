@@ -17,5 +17,5 @@ class Message(db.Model):
         db.Integer, db.ForeignKey("users.id"), nullable=False)
     message = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(50), nullable=False, default="unread")
-    created_date = db.Column(db.DateTime, default=datetime.utcnow)
+    created_date = db.Column(db.DateTime, default=datetime.utcnow())
     updated_date = db.Column(db.DateTime)

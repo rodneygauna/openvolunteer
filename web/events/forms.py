@@ -17,6 +17,10 @@ class EventForm(FlaskForm):
                            validators=[DataRequired()])
     start_time = TimeField("Start Time", format='%H:%M',
                            validators=[DataRequired()])
+    end_date = DateField("End Date", format='%Y-%m-%d',
+                         validators=[DataRequired()])
+    end_time = TimeField("End Time", format='%H:%M',
+                            validators=[DataRequired()])
     start_timezone = SelectField("Timezone", choices=TIMEZONES,
                                  default="UTC", validators=[DataRequired()])
     title = TextAreaField("Title", validators=[DataRequired()])

@@ -34,6 +34,7 @@ mail.init_app(app)
 from users.views import users_bp
 from core.views import core_bp
 from events.views import event_bp
+from events.rss_feed import rss_feed_bp
 from notifications.views import notifications_bp
 from messages.views import messages_bp
 
@@ -43,6 +44,7 @@ app.register_blueprint(core_bp)
 app.register_blueprint(event_bp)
 app.register_blueprint(notifications_bp)
 app.register_blueprint(messages_bp)
+app.register_blueprint(rss_feed_bp)
 
 
 # Main run script

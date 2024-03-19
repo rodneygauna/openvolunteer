@@ -50,16 +50,30 @@
               <div>
                 <ul>
                   <li>
-                    <span>Event Date:</span>
+                    <span>Event Start Date:</span>
                     <span
                       >{{ event_details.start_date.strftime('%A, %B %d, %Y')
                       }}</span
                     >
                   </li>
                   <li>
-                    <span>Event Time:</span>
+                    <span>Event Start Time:</span>
                     <span
                       >{{ event_details.start_time.strftime('%I:%M %p') }} {{
+                      event_details.start_timezone }}</span
+                    >
+                  </li>
+                  <li>
+                    <span>Event End Date:</span>
+                    <span
+                      >{{ event_details.end_date.strftime('%A, %B %d, %Y')
+                      }}</span
+                    >
+                  </li>
+                  <li>
+                    <span>Event End Time:</span>
+                    <span
+                      >{{ event_details.end_time.strftime('%I:%M %p') }} {{
                       event_details.start_timezone }}</span
                     >
                   </li>
