@@ -1,1 +1,112 @@
-{% extends "_base.html" %} {% block content %} {% endblock %}
+{% extends "_base.html" %} {% block content %} {% if
+current_user.is_authenticated %}
+<!-- Start Stats -->
+<div class="container-fluid pt-4 px-4">
+  <div class="row g-4">
+    <div class="col-sm-6 col-md-3">
+      <div
+        class="bg-light rounded d-flex align-items-center justify-content-between p-4"
+      >
+        <i class="fa fa-chart-line fa-3x text-primary"></i>
+        <div class="ms-3">
+          <p class="mb-2">Stat Title</p>
+          <h6 class="mb-0">Stat</h6>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+      <div
+        class="bg-light rounded d-flex align-items-center justify-content-between p-4"
+      >
+        <i class="fa fa-chart-line fa-3x text-primary"></i>
+        <div class="ms-3">
+          <p class="mb-2">Stat Title</p>
+          <h6 class="mb-0">Stat</h6>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+      <div
+        class="bg-light rounded d-flex align-items-center justify-content-between p-4"
+      >
+        <i class="fa fa-chart-line fa-3x text-primary"></i>
+        <div class="ms-3">
+          <p class="mb-2">Stat Title</p>
+          <h6 class="mb-0">Stat</h6>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+      <div
+        class="bg-light rounded d-flex align-items-center justify-content-between p-4"
+      >
+        <i class="fa fa-chart-line fa-3x text-primary"></i>
+        <div class="ms-3">
+          <p class="mb-2">Stat Title</p>
+          <h6 class="mb-0">Stat</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Stats -->
+<!-- Start Next 5 Upcoming Events and 5 Most Recent Notifications -->
+<div class="container-fluid pt-4 px-4">
+  <div class="row g-4">
+    <div class="col-sm-12 col-md-6">
+      <div class="bg-light rounded p-4">
+        <h5 class="mb-4">Upcoming Events</h5>
+        {% if upcoming_events %} {% for e in upcoming_events %}
+        <div class="align-items-center border-bottom py-3">
+          <div class="w-100 ms-3">
+            <div class="d-flex w-100 justify-content-between">
+              <h6 class="mb-0">{{ e.title }}</h6>
+            </div>
+            <span
+              >Event Date: {{ e.start_date.strftime('%A, %B %d, %Y') }}
+              {{e.start_time.strftime('%I:%M %p') }}</span
+            >
+            <span>{{ e.description }}</span>
+            <br />
+            <a
+              href="{{ url_for('events.event', event_id=e.id) }}"
+              class="btn btn-sm btn-outline-primary mt-1"
+              >View Event</a
+            >
+          </div>
+        </div>
+        {% endfor %} {% else %}
+        <p>No upcoming events</p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+      <div class="bg-light rounded p-4">
+        <h5 class="mb-4">Recent Notifications</h5>
+        {% if recent_notifications %} {% for n in recent_notifications %}
+        <div class="align-items-center border-bottom py-3">
+          <div class="w-100 ms-3">
+            <div class="d-flex w-100 justify-content-between">
+              <h6 class="mb-0">{{ n.title }}</h6>
+              <small>{{ n.created_date.strftime('%Y-%m-%d') }}</small>
+            </div>
+            <span>{{ n.message }}</span>
+            <br />
+            <a
+              href="{{ url_for('notifications.view_notification', notification_id=n.id) }}"
+              class="btn btn-sm btn-outline-primary mt-1"
+              >View Notification</a
+            >
+          </div>
+        </div>
+        {% endfor %} {% else %}
+        <p>No recent notifications</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Next 5 Upcoming Events and 5 Most Recent Notifications -->
+{% else %}
+<p>You should log in, yo.</p>
+{% endif %} {% endblock content %}
