@@ -3,7 +3,7 @@
 from datetime import datetime, timedelta
 from app import db
 from notifications.models import Notification
-from events.models import Event, EventAttendee
+from events.models import Event
 from users.models import User
 
 

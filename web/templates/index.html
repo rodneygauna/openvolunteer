@@ -109,5 +109,37 @@ current_user.is_authenticated %}
 </div>
 <!-- End Next 5 Upcoming Events and 5 Most Recent Notifications -->
 {% else %}
-<p>You should log in, yo.</p>
+<div class="container-fluid pt-4 px-4">
+  <div class="row g-4">
+    <div class="col-sm-12">
+      <div class="bg-light rounded p-4">
+        <h5>Welcome to [ORGANIZATION NAME] voluteer portal.</h5>
+      </div>
+    </div>
+  </div>
+  <div class="row g-4">
+    <div class="col-sm-12 col-md-6">
+      <div class="bg-light rounded p-4">
+        <h5 class="mb-4">Register</h5>
+        <p>
+          If you are new to the portal, feel free to
+          <a href="{{ url_for('users.register_user') }}"
+            >create a new account</a
+          >
+          using your personal email.
+        </p>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+      <div class="bg-light rounded p-4">
+        <h5 class="mb-4">Login</h5>
+        <p>
+          If you have an existing account, please
+          <a href="{{ url_for('users.login') }}">log in</a>
+          using the email you registered with.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 {% endif %} {% endblock content %}
