@@ -1,10 +1,10 @@
 """Create an RSS feed for events."""
 # Imports
+from datetime import datetime
+import xml.etree.ElementTree as ET
 import pytz
-from datetime import datetime, timedelta
 from ics import Calendar, Event as IcsEvent
 from flask import Blueprint, Response
-import xml.etree.ElementTree as ET
 from app import db
 from users.models import User
 from .models import Event
@@ -43,16 +43,20 @@ def events_feed():
     rss = ET.Element('rss', version='2.0')
     channel = ET.SubElement(rss, 'channel')
     ET.SubElement(channel, 'title').text = 'OpenVolunteer Events Feed'
-    ET.SubElement(channel, 'description').text = 'Upcoming events for OpenVolunteer'
-    ET.SubElement(channel, 'lastBuildDate').text = datetime.now(pytz.utc).strftime('%a, %d %b %Y %H:%M:%S %z')
+    ET.SubElement(
+        channel, 'description').text = 'Upcoming events for OpenVolunteer'
+    ET.SubElement(channel, 'lastBuildDate').text = datetime.now(
+        pytz.utc).strftime('%a, %d %b %Y %H:%M:%S %z')
 
     for event in events:
         item = ET.SubElement(channel, 'item')
         ET.SubElement(item, 'guid').text = str(event.id)
         ET.SubElement(item, 'title').text = event.title
-        description_text = f"{event.description}\n\nStart Date: {event.start_date.strftime('%a, %d %b %Y')}\nStart Time: {event.start_time.strftime('%H:%M %p')}\nTimezone: {event.start_timezone}\nCreated By: {event.first_name} {event.last_name}"
+        description_text = f"{event.description}\n\nStart Date: {event.start_date.strftime('%a, %d %b %Y')}\nStart Time: {
+            event.start_time.strftime('%H:%M %p')}\nTimezone: {event.start_timezone}\nCreated By: {event.first_name} {event.last_name}"
         ET.SubElement(item, 'description').text = description_text
-        pubDate = datetime.combine(event.start_date, event.start_time).astimezone(pytz.timezone(event.start_timezone)).strftime('%a, %d %b %Y %H:%M:%S %Z')
+        pubDate = datetime.combine(event.start_date, event.start_time).astimezone(
+            pytz.timezone(event.start_timezone)).strftime('%a, %d %b %Y %H:%M:%S %Z')
         ET.SubElement(item, 'pubDate').text = pubDate
 
     rss_string = ET.tostring(rss, encoding='utf-8', method='xml')
@@ -96,9 +100,11 @@ def events_ics():
     for event in events:
         # Combine date and time into a single datetime object
         start_datetime = datetime.combine(event.start_date, event.start_time)
-        start_datetime = pytz.timezone(event.start_timezone).localize(start_datetime)
+        start_datetime = pytz.timezone(
+            event.start_timezone).localize(start_datetime)
         end_datetime = datetime.combine(event.end_date, event.end_time)
-        end_datetime = pytz.timezone(event.start_timezone).localize(end_datetime)
+        end_datetime = pytz.timezone(
+            event.start_timezone).localize(end_datetime)
 
         # Create an event
         ical_event = IcsEvent()
