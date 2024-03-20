@@ -3,7 +3,7 @@
 from datetime import datetime, timedelta
 from app import db
 from notifications.models import Notification
-from events.models import Event
+from events.models import Event, EventAttendee
 from users.models import User
 
 
@@ -51,3 +51,56 @@ def get_upcoming_events():
     )
 
     return five_upcoming_events
+
+
+# Query - Total count of active users
+def get_active_users_count():
+    """Get total count of active users"""
+
+    active_users_count = User.query.filter_by(status="active").count()
+
+    return active_users_count
+
+
+# Query - Total count of active events
+def get_active_events_count():
+    """Get total count of active events"""
+
+    active_events_count = Event.query.filter_by(event_status="open").count()
+
+    return active_events_count
+
+
+# Query - Total count of active notifications
+def get_active_notifications_count():
+    """Get total count of active notifications"""
+
+    active_notifications_count = Notification.query.filter_by(
+        status="active").count()
+
+    return active_notifications_count
+
+
+# Query - Total count of event hours
+def get_total_event_hours():
+    """Get total count of event hours"""
+
+    total_event_hours = (
+        db.session.query(Event.id,
+                         Event.start_date,
+                         Event.start_time,
+                         Event.end_date,
+                         Event.end_time
+                         )
+        .filter(Event.end_date <= datetime.now())
+        .all()
+    )
+
+    total_hours = 0
+    for event in total_event_hours:
+        start_datetime = datetime.combine(event.start_date, event.start_time)
+        end_datetime = datetime.combine(event.end_date, event.end_time)
+        duration = end_datetime - start_datetime
+        total_hours += duration.total_seconds() / 3600
+
+    return total_hours
