@@ -52,11 +52,9 @@ def events_feed():
         item = ET.SubElement(channel, 'item')
         ET.SubElement(item, 'guid').text = str(event.id)
         ET.SubElement(item, 'title').text = event.title
-        description_text = f"{event.description}\n\nStart Date: {event.start_date.strftime('%a, %d %b %Y')}\nStart Time: {
-            event.start_time.strftime('%H:%M %p')}\nTimezone: {event.start_timezone}\nCreated By: {event.first_name} {event.last_name}"
+        description_text = f"{event.description}\n\nStart Date: {event.start_date.strftime('%a, %d %b %Y')}\nStart Time: {event.start_time.strftime('%H:%M %p')}\nTimezone: {event.start_timezone}\nCreated By: {event.first_name} {event.last_name}"
         ET.SubElement(item, 'description').text = description_text
-        pubDate = datetime.combine(event.start_date, event.start_time).astimezone(
-            pytz.timezone(event.start_timezone)).strftime('%a, %d %b %Y %H:%M:%S %Z')
+        pubDate = datetime.combine(event.start_date, event.start_time).astimezone(pytz.timezone(event.start_timezone)).strftime('%a, %d %b %Y %H:%M:%S %Z')
         ET.SubElement(item, 'pubDate').text = pubDate
 
     rss_string = ET.tostring(rss, encoding='utf-8', method='xml')
