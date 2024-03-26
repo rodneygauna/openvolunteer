@@ -63,11 +63,13 @@ def events_ics():
 
         # Combine location details into a single string
         if event.location_id:
-            location = f"{event.location_address_1}, {event.location_city}, {
-                event.location_state} {event.location_postal_code}"
+            location = (
+                f"{event.location_name}, {event.location_address_1}, {event.location_city}, {event.location_state} {event.location_postal_code}"
+            )
             if event.location_address_2:
-                location = f"{event.location_address_1}, {event.location_address_2}, {
-                    event.location_city}, {event.location_state} {event.location_postal_code}"
+                location = (
+                    f"{event.location_address_1}, {event.location_address_2}, {event.location_city}, {event.location_state} {event.location_postal_code}"
+                )
         else:
             location = "See event description for location details."
 
