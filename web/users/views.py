@@ -41,6 +41,8 @@ def register_user():
 
     form = RegisterUserForm()
 
+    check_if_first_user = User.query.first()
+
     if form.validate_on_submit():
         # Check if email is already registered
         if User.query.filter_by(email=form.email.data).first():
@@ -54,6 +56,8 @@ def register_user():
             email=form.email.data,
             password_hash=generate_password_hash(form.password.data),
         )
+        if check_if_first_user is None:
+            user.role = "admin"
         db.session.add(user)
         db.session.commit()
         flash('You have successfully registered!', 'success')
@@ -74,7 +78,12 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
 
-        if user.check_password(form.password.data) and user is not None:
+        if user is None:
+            flash('Login failed. Please check your email and password.',
+                  'warning')
+            return redirect(url_for('users.login'))
+
+        elif user.check_password(form.password.data) and user is not None:
             # Check user's status
             if user.status == 'INACTIVE':
                 flash(
@@ -101,8 +110,6 @@ def login():
 
             # Redirect the user to the short code page
             return redirect(url_for('users.enter_code'))
-
-        flash('Invalid email or password.', 'warning')
 
     return render_template('users/login.html',
                            title='OpenVolunteer - Login',
