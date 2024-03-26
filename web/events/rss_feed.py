@@ -7,6 +7,7 @@ from ics import Calendar, Event as IcsEvent
 from flask import Blueprint, Response
 from app import db
 from users.models import User
+from settings.models import Location
 from .models import Event
 
 # Blueprint
@@ -52,9 +53,11 @@ def events_feed():
         item = ET.SubElement(channel, 'item')
         ET.SubElement(item, 'guid').text = str(event.id)
         ET.SubElement(item, 'title').text = event.title
-        description_text = f"{event.description}\n\nStart Date: {event.start_date.strftime('%a, %d %b %Y')}\nStart Time: {event.start_time.strftime('%H:%M %p')}\nTimezone: {event.start_timezone}\nCreated By: {event.first_name} {event.last_name}"
+        description_text = f"{event.description}\n\nStart Date: {event.start_date.strftime('%a, %d %b %Y')}\nStart Time: {
+            event.start_time.strftime('%H:%M %p')}\nTimezone: {event.start_timezone}\nCreated By: {event.first_name} {event.last_name}"
         ET.SubElement(item, 'description').text = description_text
-        pubDate = datetime.combine(event.start_date, event.start_time).astimezone(pytz.timezone(event.start_timezone)).strftime('%a, %d %b %Y %H:%M:%S %Z')
+        pubDate = datetime.combine(event.start_date, event.start_time).astimezone(
+            pytz.timezone(event.start_timezone)).strftime('%a, %d %b %Y %H:%M:%S %Z')
         ET.SubElement(item, 'pubDate').text = pubDate
 
     rss_string = ET.tostring(rss, encoding='utf-8', method='xml')
@@ -83,10 +86,18 @@ def events_ics():
             Event.created_date,
             Event.updated_date,
             Event.event_leader_id,
+            Event.location_id,
+            Location.name.label('location_name'),
+            Location.address_1.label('location_address_1'),
+            Location.address_2.label('location_address_2'),
+            Location.city.label('location_city'),
+            Location.state.label('location_state'),
+            Location.postal_code.label('location_postal_code'),
             User.first_name,
             User.last_name
         )
         .join(User, Event.event_leader_id == User.id)
+        .outerjoin(Location, Event.location_id == Location.id)
         .filter(Event.start_date >= datetime.now())
         .filter(Event.event_status == 'open')
         .order_by(Event.start_date.asc())
@@ -104,13 +115,23 @@ def events_ics():
         end_datetime = pytz.timezone(
             event.start_timezone).localize(end_datetime)
 
+        # Combine location details into a single string
+        location = f"{event.location_address_1}, {event.location_city}, {
+            event.location_state} {event.location_postal_code}"
+        if event.location_address_2:
+            location = f"{event.location_address_1}, {
+                event.location_address_2}, {
+                    event.location_city}, {
+                        event.location_state} {
+                            event.location_postal_code}"
+
         # Create an event
         ical_event = IcsEvent()
         ical_event.name = event.title
         ical_event.begin = start_datetime
         ical_event.end = end_datetime
         ical_event.description = event.description
-        ical_event.location = "Log into OpenVolunteer for location details"
+        ical_event.location = location
         ical_event.created = event.created_date
         ical_event.last_modified = event.updated_date
         ical_event.uid = str(event.id)
