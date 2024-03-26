@@ -116,14 +116,17 @@ def events_ics():
             event.start_timezone).localize(end_datetime)
 
         # Combine location details into a single string
-        location = f"{event.location_address_1}, {event.location_city}, {
-            event.location_state} {event.location_postal_code}"
-        if event.location_address_2:
-            location = f"{event.location_address_1}, {
-                event.location_address_2}, {
-                    event.location_city}, {
-                        event.location_state} {
-                            event.location_postal_code}"
+        if event.location_id:
+            location = f"{event.location_address_1}, {event.location_city}, {
+                event.location_state} {event.location_postal_code}"
+            if event.location_address_2:
+                location = f"{event.location_address_1}, {
+                    event.location_address_2}, {
+                        event.location_city}, {
+                            event.location_state} {
+                                event.location_postal_code}"
+        else:
+            location = "See event description for location details."
 
         # Create an event
         ical_event = IcsEvent()
