@@ -1,0 +1,47 @@
+{% extends '_base.html' %} {% block content %}
+<div class="row g-4">
+  <div class="col-sm-12">
+    <div class="bg-light rounded h-100 p-4">
+      <h6 class="mb-4">Saved Locations</h6>
+      <a
+        href="{{ url_for('settings.create_location') }}"
+        class="btn btn-primary"
+        >Add Location</a
+      >
+      <table class="table table-striped">
+        <thead>
+          <th scope="col">Short Name</th>
+          <th scope="col">Address</th>
+          <th scope="col">Phone</th>
+          <th scope="col">Email</th>
+          <th scope="col">Action</th>
+        </thead>
+        <tbody>
+          {% if locations %} {% for location in locations %}
+          <tr>
+            <td scope="row">{{ location.short_name }}</td>
+            <td>
+              {{ location.address_1 }} {{ location.address_2 }}<br />{{
+              location.city }}, {{ location.state }} {{ location.postal_code }}
+            </td>
+            <td>{{ location.phone }}</td>
+            <td>{{ location.email }}</td>
+            <td>
+              <a
+                href="{{ url_for('settings.edit_location', location_id=location.id) }}"
+                class="btn btn-primary btn-sm"
+                >Edit</a
+              >
+            </td>
+          </tr>
+          {% endfor %} {% else %}
+          <tr>
+            <td colspan="5">No locations found</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock content %}

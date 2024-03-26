@@ -8,12 +8,27 @@ from flask_login import login_required, current_user
 from sqlalchemy import or_
 from app import db
 from users.models import User
+from settings.models import Location, DefaultPreference
 from .forms import EventForm, EventSignupForm
 from .models import Event, EventAttendee
 
 
 # Blueprint
 event_bp = Blueprint("events", __name__)
+
+
+# Preferences from Settings > Default Preferences
+def get_default_preferences():
+    """Get the default preferences for the application"""
+
+    default_preferences = DefaultPreference.query.first()
+
+    if default_preferences:
+        default_timezone = default_preferences.default_timezone
+    else:
+        default_timezone = "UTC"
+
+    return default_timezone
 
 
 # View Event
@@ -76,7 +91,7 @@ def event(event_id):
         Event.updated_date,
         User.first_name,
         User.last_name
-        )\
+    )\
         .join(User, Event.event_leader_id == User.id)\
         .filter(Event.id == event_id).first()
     event_roster = db.session.query(EventAttendee.id,
@@ -121,6 +136,9 @@ def create_event():
     """Creates a new event"""
 
     form = EventForm()
+
+    # pass default timezone to form
+    form.start_timezone.data = get_default_preferences()
 
     if form.validate_on_submit():
         if form.start_date.data is None:

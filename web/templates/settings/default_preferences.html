@@ -1,0 +1,18 @@
+{% extends '_base.html' %} {% block content %}
+<div class="row g-4">
+  <div class="col-sm-12">
+    <div class="bg-light rounded h-100 p-4">
+      <h6 class="mb-4">Default Preferences</h6>
+      <a
+        href="{{ url_for('settings.create_default_preferences') }}"
+        class="btn btn-primary"
+        >Default Preferences</a
+      >
+      <div class="mt-4">
+        <p class="mb-2">Default Timezone for Events</p>
+        <h6 class="mb-0">{{ default_preferences.default_timezone }}</h6>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

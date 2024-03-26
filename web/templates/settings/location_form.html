@@ -1,0 +1,73 @@
+{% extends "_base.html" %} {% block content %}
+<div class="container-fluid pt-4 px-4">
+  <div class="col-sm-12">
+    <div class="bg-light rounded h-100 p-4">
+      <h6 class="mb-4">Edit Saved Locations</h6>
+      <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+          {{ form.name.label(class="form-label") }} {{
+          form.name(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.short_name.label(class="form-label") }} {{
+          form.short_name(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.email.label(class="form-label") }} {{
+          form.email(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.phone.label(class="form-label") }} {{
+          form.phone(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.fax.label(class="form-label") }} {{
+          form.fax(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.address_1.label(class="form-label") }} {{
+          form.address_1(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.address_2.label(class="form-label") }} {{
+          form.address_2(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.city.label(class="form-label") }} {{
+          form.city(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.state.label(class="form-label") }} {{
+          form.state(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.postal_code.label(class="form-label") }} {{
+          form.postal_code(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.mailing_address_1.label(class="form-label") }} {{
+          form.mailing_address_1(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.mailing_address_2.label(class="form-label") }} {{
+          form.mailing_address_2(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.mailing_city.label(class="form-label") }} {{
+          form.mailing_city(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.mailing_state.label(class="form-label") }} {{
+          form.mailing_state(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.mailing_postal_code.label(class="form-label") }} {{
+          form.mailing_postal_code(class="form-control") }}
+        </div>
+        {{form.submit(class="btn btn-primary")}}
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content%}

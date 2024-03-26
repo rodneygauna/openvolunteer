@@ -91,24 +91,36 @@ def view_locations():
     return render_template("settings/locations.html", locations=locations)
 
 
-# Route - Create/Edit Locations
+# Route - Create Locations
 @login_required
 @superuser_required
 @settings_bp.route("/locations/create", methods=["GET", "POST"])
 def create_location():
-    """Create or edit locations."""
-    location = Location.query.first()
+    """Create locations."""
+    form = LocationForm()
+    if form.validate_on_submit():
+        location = Location()
+        form.populate_obj(location)
+        location.created_by = current_user.id
+        db.session.add(location)
+        db.session.commit()
+        return redirect(url_for("settings.view_locations"))
+    return render_template("settings/location_form.html", form=form)
+
+
+# Route - Edit Locations
+@login_required
+@superuser_required
+@settings_bp.route("/locations/edit/<int:location_id>",
+                   methods=["GET", "POST"])
+def edit_location(location_id):
+    """Edit locations."""
+    location = Location.query.get_or_404(location_id)
     form = LocationForm(obj=location)
     if form.validate_on_submit():
-        if location:
-            form.populate_obj(location)
-        else:
-            location = Location()
-            form.populate_obj(location)
-            location.created_by = current_user.id
-            location.updated_date = datetime.utcnow()
-            location.updated_by = current_user.id
-            db.session.add(location)
+        form.populate_obj(location)
+        location.updated_date = datetime.utcnow()
+        location.updated_by = current_user.id
         db.session.commit()
         return redirect(url_for("settings.view_locations"))
     return render_template("settings/location_form.html", form=form)

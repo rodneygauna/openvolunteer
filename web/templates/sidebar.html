@@ -27,6 +27,16 @@
             class="dropdown-item"
             >Organization</a
           >
+          <a
+            href="{{ url_for('settings.view_default_preferences') }}"
+            class="dropdown-item"
+            >Default Preferences</a
+          >
+          <a
+            href="{{ url_for('settings.view_locations') }}"
+            class="dropdown-item"
+            >Saved Locations</a
+          >
         </div>
       </div>
       {% endif %} {% else %}
