@@ -20,9 +20,9 @@ class EventForm(FlaskForm):
     end_date = DateField("End Date", format='%Y-%m-%d',
                          validators=[DataRequired()])
     end_time = TimeField("End Time", format='%H:%M',
-                            validators=[DataRequired()])
+                         validators=[DataRequired()])
     start_timezone = SelectField("Timezone", choices=TIMEZONES,
-                                 default="UTC", validators=[DataRequired()])
+                                 validators=[DataRequired()])
     title = TextAreaField("Title", validators=[DataRequired()])
     description = TextAreaField("Description")
     max_attendees = SelectField("Max Attendees",
