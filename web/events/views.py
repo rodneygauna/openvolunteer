@@ -30,8 +30,17 @@ def get_default_preferences():
 
     return default_timezone
 
+# List of saved locations
 
-# View Event
+
+def get_locations():
+    """Get the list of saved locations"""
+
+    locations = Location.query.all()
+    return locations
+
+
+# View Events
 @login_required
 @event_bp.route("/view_events")
 def view_events():
@@ -49,11 +58,13 @@ def view_events():
         Event.title,
         Event.description,
         Event.max_attendees,
+        Event.location_id,
         Event.event_status,
         Event.updated_date,
         db.func.count(EventAttendee.attendee_id).label("attendee_count"),
     )\
         .join(User, Event.event_leader_id == User.id)\
+        .outerjoin(Location, Event.location_id == Location.id)\
         .outerjoin(EventAttendee, db.and_(
             Event.id == EventAttendee.event_id,
             EventAttendee.attendee_status.in_(
@@ -90,9 +101,17 @@ def event(event_id):
         Event.event_status,
         Event.updated_date,
         User.first_name,
-        User.last_name
+        User.last_name,
+        Location.short_name,
+        Location.address_1.label("location_address_1"),
+        Location.address_2.label("location_address_2"),
+        Location.city.label("location_city"),
+        Location.state.label("location_state"),
+        Location.postal_code.label("location_postal_code"),
+        Location.phone.label("location_phone")
     )\
         .join(User, Event.event_leader_id == User.id)\
+        .outerjoin(Location, Event.location_id == Location.id)\
         .filter(Event.id == event_id).first()
     event_roster = db.session.query(EventAttendee.id,
                                     EventAttendee.attendee_id,
@@ -134,35 +153,25 @@ def event(event_id):
 @ login_required
 def create_event():
     """Creates a new event"""
-
     form = EventForm()
-
-    # pass default timezone to form
+    # Pass the default timezone to the form
     form.start_timezone.data = get_default_preferences()
-
+    # Pass the list of locations to the form plus an empty choice
+    form.location_id.choices = [(0, "Select Location")] + [
+        (location.id, location.short_name)
+        for location in get_locations()] + [
+            (0, "Other (specify in description)")]
     if form.validate_on_submit():
-        if form.start_date.data is None:
-            print("start_date is None")
-
-        new_event = Event(
-            event_leader_id=current_user.id,
-            start_date=form.start_date.data,
-            start_time=form.start_time.data,
-            start_timezone=form.start_timezone.data,
-            end_date=form.end_date.data,
-            end_time=form.end_time.data,
-            title=form.title.data,
-            description=form.description.data,
-            max_attendees=form.max_attendees.data,
-            event_status="open",
-            created_by=current_user.id)
-
+        new_event = Event()
+        form.populate_obj(new_event)
+        if new_event.location_id == 0:
+            new_event.location_id = None
+        new_event.event_leader_id = current_user.id
+        new_event.created_by = current_user.id
         db.session.add(new_event)
         db.session.commit()
-
         flash("Event created successfully.", "success")
-        return redirect(url_for("events.event", event_id=new_event.id))
-
+        return redirect(url_for("events.view_events"))
     return render_template(
         "events/create_event.html",
         title="OpenVolunteer - Create Event",
@@ -175,43 +184,22 @@ def create_event():
 @ login_required
 def edit_event(event_id):
     """Edits an existing event"""
-
-    event = Event.query.get_or_404(event_id)
-
-    if event.event_leader_id != current_user.id:
-        flash("You are not authorized to edit this event.", "danger")
-        return redirect(url_for("events.view_Event"))
-
-    form = EventForm()
-
+    edit_event_obj = Event.query.get_or_404(event_id)
+    form = EventForm(obj=edit_event_obj)
+    # Pass the list of locations to the form plus an empty choice
+    form.location_id.choices = [(0, "Select Location")] + [
+        (location.id, location.short_name)
+        for location in get_locations()] + [
+            (0, "Other (specify in description)")]
     if form.validate_on_submit():
-        event.start_date = form.start_date.data
-        event.start_time = form.start_time.data
-        event.start_timezone = form.start_timezone.data
-        event.end_date = form.end_date.data
-        event.end_time = form.end_time.data
-        event.title = form.title.data
-        event.description = form.description.data
-        event.max_attendees = form.max_attendees.data
-        event.event_status = form.event_status.data
-        event.updated_date = datetime.utcnow()
-        event.updated_by = current_user.id
-
+        form.populate_obj(edit_event_obj)
+        if edit_event_obj.location_id == 0:
+            edit_event_obj.location_id = None
+        edit_event_obj.updated_date = datetime.utcnow()
+        edit_event_obj.updated_by = current_user.id
         db.session.commit()
         flash("Event updated successfully.", "success")
-        return redirect(url_for("events.event", event_id=event.id))
-
-    elif request.method == "GET":
-        form.start_date.data = event.start_date
-        form.start_time.data = event.start_time
-        form.start_timezone.data = event.start_timezone
-        form.end_date.data = event.end_date
-        form.end_time.data = event.end_time
-        form.title.data = event.title
-        form.description.data = event.description
-        form.max_attendees.data = event.max_attendees
-        form.event_status.data = event.event_status
-
+        return redirect(url_for("events.view_events"))
     return render_template(
         "events/edit_event.html",
         title="OpenVolunteer - Edit Event",

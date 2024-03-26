@@ -20,6 +20,7 @@ class Event(db.Model):
     start_timezone = db.Column(db.Text, nullable=False)
     end_date = db.Column(db.Date, nullable=False)
     end_time = db.Column(db.Time, nullable=False)
+    location_id = db.Column(db.Integer, db.ForeignKey("locations.id"))
     event_status = db.Column(db.String(255), default="open")
     created_date = db.Column(db.DateTime, default=datetime.utcnow())
     created_by = db.Column(
@@ -45,4 +46,3 @@ class EventAttendee(db.Model):
         db.Integer, db.ForeignKey("users.id"), nullable=False)
     updated_date = db.Column(db.DateTime)
     updated_by = db.Column(db.Integer, db.ForeignKey("users.id"))
-

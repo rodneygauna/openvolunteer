@@ -85,6 +85,22 @@
                     >
                   </li>
                   <li>
+                    <span>Event Location:</span>
+                    {% if event_details.short_name %}
+                    <span>{{ event_details.short_name }}</span>
+                    <span
+                      >{{ event_details.location_address_1 }}, {% if
+                      event_details.location_address_2 %} {{
+                      event_details.location_address_2 }}, {% endif %} {{
+                      event_details.location_city}}, {{
+                      event_details.location_state }} {{
+                      event_details.location_postal_code }}</span
+                    >
+                    {% else %}
+                    <span>Check event details for more information.</span>
+                    {% endif %}
+                  </li>
+                  <li>
                     <span>Event Status:</span>
                     <span>{{ event_details.event_status }}</span>
                   </li>
