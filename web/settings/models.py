@@ -25,12 +25,11 @@ class Organization(db.Model):
     mailing_city = db.Column(db.String(255))
     mailing_state = db.Column(db.String(255))
     mailing_postal_code = db.Column(db.String(255))
-    created_date = db.Column(
-        db.DateTime, default=datetime.utcnow(), nullable=False)
+    created_date = db.Column(db.DateTime, default=datetime.utcnow())
     created_by = db.Column(
-        db.Integer, db.ForiegnKey("users.id"), nullable=False)
+        db.Integer, db.ForeignKey("users.id"), nullable=False)
     updated_date = db.Column(db.DateTime)
-    udpated_by = db.Column(db.Integer, db.ForiegnKey("users.id"))
+    updated_by = db.Column(db.Integer, db.ForeignKey("users.id"))
 
 
 # Model - Default Preferences
@@ -41,6 +40,11 @@ class DefaultPreference(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     default_timezone = db.Column(db.String(255), default="UTC")
+    created_date = db.Column(db.DateTime, default=datetime.utcnow())
+    created_by = db.Column(
+        db.Integer, db.ForeignKey("users.id"), nullable=False)
+    updated_date = db.Column(db.DateTime)
+    updated_by = db.Column(db.Integer, db.ForeignKey("users.id"))
 
 
 # Model - Locations
@@ -65,9 +69,9 @@ class Location(db.Model):
     mailing_city = db.Column(db.String(255))
     mailing_state = db.Column(db.String(255))
     mailing_postal_code = db.Column(db.String(255))
-    created_date = db.Column(
-        db.DateTime, default=datetime.utcnow(), nullable=False)
+    comments = db.Column(db.Text)
+    created_date = db.Column(db.DateTime, default=datetime.utcnow())
     created_by = db.Column(
-        db.Integer, db.ForiegnKey("users.id"), nullable=False)
+        db.Integer, db.ForeignKey("users.id"), nullable=False)
     updated_date = db.Column(db.DateTime)
-    udpated_by = db.Column(db.Integer, db.ForiegnKey("users.id"))
+    updated_by = db.Column(db.Integer, db.ForeignKey("users.id"))
