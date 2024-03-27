@@ -26,11 +26,13 @@ def admin_required(f):
     """Decorator to check if user is an Admin"""
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        error_code = "403"
-        if not current_user.is_authenticated or current_user.role != "admin":
+        if not current_user.is_authenticated or current_user.role not in [
+            "admin"
+        ]:
             return render_template("40X.html",
                                    title="OpenVolunteer - 403 Unauthorized",
-                                   error_code=error_code), 403
+                                   error_code="403"), 403
+
         return f(*args, **kwargs)
 
     return decorated_function
