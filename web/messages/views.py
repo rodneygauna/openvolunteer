@@ -12,8 +12,8 @@ messages_bp = Blueprint("messages", __name__)
 
 
 # Route - Send Message
-@login_required
 @messages_bp.route("/messages/create", methods=["GET", "POST"])
+@login_required
 def send_message():
     """Send a message to another user."""
 
@@ -64,8 +64,8 @@ def send_message():
 
 
 # Route - View Messages
-@login_required
 @messages_bp.route("/messages")
+@login_required
 def view_messages():
     """View messages for the current user."""
 

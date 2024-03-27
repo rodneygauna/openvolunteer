@@ -15,9 +15,9 @@ settings_bp = Blueprint("settings", __name__, url_prefix="/settings")
 
 
 # Route - View Organization
+@settings_bp.route("/organization", methods=["GET"])
 @login_required
 @admin_required
-@settings_bp.route("/organization", methods=["GET"])
 def view_organization():
     """View organization details."""
     organization = Organization.query.first()
@@ -26,9 +26,10 @@ def view_organization():
 
 
 # Route - Create/Edit Organization
+
+@settings_bp.route("/organization/create", methods=["GET", "POST"])
 @login_required
 @admin_required
-@settings_bp.route("/organization/create", methods=["GET", "POST"])
 def create_organization():
     """Create or edit organization details."""
     organization = Organization.query.first()
@@ -49,9 +50,9 @@ def create_organization():
 
 
 # Route - View Default Preferences
+@settings_bp.route("/default-preferences", methods=["GET"])
 @login_required
 @admin_required
-@settings_bp.route("/default-preferences", methods=["GET"])
 def view_default_preferences():
     """View default preferences."""
     default_preferences = DefaultPreference.query.first()
@@ -60,9 +61,9 @@ def view_default_preferences():
 
 
 # Route - Create/Edit Default Preferences
+@settings_bp.route("/default-preferences/create", methods=["GET", "POST"])
 @login_required
 @admin_required
-@settings_bp.route("/default-preferences/create", methods=["GET", "POST"])
 def create_default_preferences():
     """Create or edit default preferences."""
     default_preferences = DefaultPreference.query.first()
@@ -83,9 +84,9 @@ def create_default_preferences():
 
 
 # Route - View Locations
+@settings_bp.route("/locations", methods=["GET"])
 @login_required
 @superuser_required
-@settings_bp.route("/locations", methods=["GET"])
 def view_locations():
     """View locations."""
     locations = Location.query.all()
@@ -93,9 +94,9 @@ def view_locations():
 
 
 # Route - Create Locations
+@settings_bp.route("/locations/create", methods=["GET", "POST"])
 @login_required
 @superuser_required
-@settings_bp.route("/locations/create", methods=["GET", "POST"])
 def create_location():
     """Create locations."""
     form = LocationForm()
@@ -110,10 +111,10 @@ def create_location():
 
 
 # Route - Edit Locations
-@login_required
-@superuser_required
 @settings_bp.route("/locations/edit/<int:location_id>",
                    methods=["GET", "POST"])
+@login_required
+@superuser_required
 def edit_location(location_id):
     """Edit locations."""
     location = Location.query.get_or_404(location_id)
@@ -128,9 +129,9 @@ def edit_location(location_id):
 
 
 # Route - User Management
+@settings_bp.route("/users", methods=["GET"])
 @login_required
 @admin_required
-@settings_bp.route("/users", methods=["GET"])
 def view_users():
     """View all users."""
     users = get_users()

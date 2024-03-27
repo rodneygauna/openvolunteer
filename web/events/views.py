@@ -41,8 +41,8 @@ def get_locations():
 
 
 # View Events
-@login_required
 @event_bp.route("/view_events")
+@login_required
 def view_events():
     """View all Event"""
 
@@ -297,9 +297,9 @@ def edit_event_signup(event_id):
 
 
 # Cancel event signup
-@ event_bp.route("/cancel_event_signup/<int:event_id>",
-                 methods=["GET", "POST"])
-@ login_required
+@event_bp.route("/cancel_event_signup/<int:event_id>",
+                methods=["GET", "POST"])
+@login_required
 def cancel_event_signup(event_id):
     """Changes event status to canceled"""
 
