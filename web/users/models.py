@@ -19,7 +19,7 @@ def load_user(user_id):
 @login_manager.unauthorized_handler
 def unauthorized():
     """Redirects unauthorized users to the login page"""
-    return redirect(url_for("users.login"))
+    return redirect(url_for("users.login")), 401
 
 
 # Model - User
@@ -50,3 +50,7 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         """Checks if the password is correct"""
         return check_password_hash(self.password_hash, password)
+
+    def is_superuser_admin(self):
+        """Checks if the user is a superuser"""
+        return self.role in ["super user", "admin"]
