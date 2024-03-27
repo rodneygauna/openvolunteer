@@ -9,14 +9,13 @@ def superuser_required(f):
     """Decorator to check if user is a Super User or Admin"""
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        error_code = "403"
         if not current_user.is_authenticated or current_user.role not in [
             "super user",
             "admin",
         ]:
             return render_template("40X.html",
                                    title="OpenVolunteer - 403 Unauthorized",
-                                   error_code=error_code), 403
+                                   error_code="403"), 403
         return f(*args, **kwargs)
 
     return decorated_function
