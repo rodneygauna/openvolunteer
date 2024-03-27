@@ -5,6 +5,7 @@ from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
 from users.admin_superuser import admin_required, superuser_required
 from app import db
+from .queries import get_users
 from .forms import OrganizationForm, DefaultPreferenceForm, LocationForm
 from .models import Organization, DefaultPreference, Location
 
@@ -124,3 +125,13 @@ def edit_location(location_id):
         db.session.commit()
         return redirect(url_for("settings.view_locations"))
     return render_template("settings/location_form.html", form=form)
+
+
+# Route - User Management
+@login_required
+@admin_required
+@settings_bp.route("/users", methods=["GET"])
+def view_users():
+    """View all users."""
+    users = get_users()
+    return render_template("settings/users.html", users=users)
