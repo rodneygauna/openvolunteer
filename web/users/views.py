@@ -54,6 +54,7 @@ def register_user():
             first_name=form.first_name.data,
             last_name=form.last_name.data,
             email=form.email.data,
+            phone=form.phone.data,
             password_hash=generate_password_hash(form.password.data),
         )
         if check_if_first_user is None:

@@ -32,6 +32,7 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(255), nullable=False)
     last_name = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), unique=True, index=True)
+    phone = db.Column(db.String(255), nullable=False)
     password_hash = db.Column(db.String(255))
     role = db.Column(db.String(255), default="user")
     status = db.Column(db.String(255), default="active")
