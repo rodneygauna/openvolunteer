@@ -29,14 +29,20 @@
       <div
         class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0"
       >
-        <a href="#" class="dropdown-item">My Profile</a>
+        <a
+          href="{{ url_for('users.user_profile', first_name=current_user.first_name, last_name=current_user.last_name) }}"
+          class="dropdown-item"
+          ><i class="fa fa-user me-2"></i>Profile</a
+        >
         <a href="{{ url_for('users.logout') }}" class="dropdown-item"
-          >Log Out</a
+          ><i class="fa fa-sign-out-alt me-2"></i>Log Out</a
         >
       </div>
     </div>
     {% else %}
-    <a href="{{ url_for('users.login') }}" class="nav-item nav-link"
+    <a
+      href="{{ url_for('users.login', user_id=current_user.id) }}"
+      class="nav-item nav-link"
       ><i class="fa fa-sign-in-alt me-2"></i>Login</a
     >
     <a href="{{ url_for('users.register_user') }}" class="nav-item nav-link"

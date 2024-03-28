@@ -36,7 +36,9 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(255))
     role = db.Column(db.String(255), default="user")
     status = db.Column(db.String(255), default="active")
+    created_by = db.Column(db.Integer)
     created_date = db.Column(db.DateTime, default=datetime.utcnow())
+    updated_by = db.Column(db.Integer)
     updated_date = db.Column(db.DateTime)
 
     def __init__(self, first_name, last_name, email, phone, password_hash):

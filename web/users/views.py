@@ -1,6 +1,7 @@
 """Users > Views"""
 
 # Imports
+from datetime import datetime
 from random import randint
 from flask import (
     Blueprint,
@@ -180,17 +181,41 @@ def logout():
 
 
 # Route - User Account
-@users_bp.route('/account/<int:user_id>', methods=['GET', 'POST'])
+@users_bp.route('/account/@<string:first_name>-<string:last_name>',
+                methods=['GET', 'POST'])
 @login_required
-def user_profile(user_id):
+def user_profile(first_name, last_name):
     """Routes the current user to their profile page"""
-
-    user = User.query.get_or_404(user_id)
-
-    if user != current_user:
-        abort(403)
+    user = User.query.filter_by(
+        first_name=first_name,
+        last_name=last_name).first_or_404()
 
     return render_template('users/account.html',
+                           title='OpenVolunteer - Account',
+                           user=user)
+
+
+# Route - Edit User Account
+@users_bp.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile(user_id):
+    """Routes the current user to their profile page"""
+    user = User.query.get_or_404(user_id)
+    form = RegisterUserForm(obj=user)
+    if user != current_user:
+        return render_template("40X.html",
+                               title="OpenVolunteer - 403 Unauthorized",
+                               error_code="403"), 403
+    else:
+        if form.validate_on_submit():
+            form.populate_obj(user)
+            user.updated_by = current_user.id
+            user.updated_date = datetime.utcnow()
+            db.session.commit()
+            flash('Your account has been updated.', 'success')
+            return redirect(url_for('users.user_profile', user_id=user.id))
+
+    return render_template('users/edit_profile.html',
                            title='OpenVolunteer - Account',
                            user=user)
 
