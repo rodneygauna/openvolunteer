@@ -133,7 +133,6 @@ def enter_code():
 
         # Check if the entered code matches the stored code
         if entered_code == stored_code:
-            flash('Short Code (2FA) is correct. Completing login.', 'success')
             return redirect(url_for('users.complete_login'))
         else:
             flash('Short Code (2FA) is incorrect. Please try again.',
@@ -223,19 +222,17 @@ def edit_profile():
 @login_required
 def change_password():
     """Allows the user to change their password"""
-
     user = User.query.get_or_404(current_user.id)
-
     if user != current_user:
         abort(403)
-
     form = ChangePasswordForm()
-
     if form.validate_on_submit():
         user.password_hash = generate_password_hash(form.password.data)
         db.session.commit()
         flash('Your password has been updated.', 'success')
-        return redirect(url_for('users.user_profile', user_id=user.id))
+        return redirect(url_for('users.user_profile',
+                                first_name=user.first_name,
+                                last_name=user.last_name))
 
     return render_template('users/change_password.html',
                            title='OpenVolunteer - Change Password',
