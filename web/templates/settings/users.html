@@ -23,10 +23,15 @@
             <td>{{ user.status }}</td>
             <td>
               <div class="btn-group" role="group">
-                <a href="#" class="btn btn-primary btn-sm">Edit</a>
-                <a href="#" class="btn btn-outline-primary btn-sm"
-                  >Reset Password</a
+                <a href="#" class="btn btn-primary btn-sm">Change Role</a>
+                <form
+                  method="POST"
+                  action="{{ url_for('settings.reset_password_route', user_id=user.id) }}"
                 >
+                  <button type="submit" class="btn btn-outline-primary btn-sm">
+                    Reset Password
+                  </button>
+                </form>
               </div>
             </td>
           </tr>
