@@ -11,7 +11,8 @@ from users.admin_superuser import admin_required, superuser_required
 from users.models import User
 from app import db, mail
 from .queries import get_users
-from .forms import OrganizationForm, DefaultPreferenceForm, LocationForm
+from .forms import (OrganizationForm, DefaultPreferenceForm, LocationForm,
+                    ChangeUserRoleForm)
 from .models import Organization, DefaultPreference, Location
 
 
@@ -180,3 +181,21 @@ def reset_password_route(user_id):
     """Routes the admin to reset a user's password"""
     reset_password(user_id)
     return redirect(url_for('settings.view_users'))
+
+
+# Route - Change User Role
+@settings_bp.route('/change_role/<int:user_id>',
+                   methods=['GET', 'POST'])
+@login_required
+@admin_required
+def change_role(user_id):
+    """Change a user's role."""
+    user = User.query.get_or_404(user_id)
+    form = ChangeUserRoleForm(obj=user)
+    if form.validate_on_submit():
+        user.role = form.role.data
+        db.session.commit()
+        flash('The user\'s role has been changed.', 'success')
+        return redirect(url_for('settings.view_users'))
+
+    return render_template('settings/change_role.html', form=form, user=user)

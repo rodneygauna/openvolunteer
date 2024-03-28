@@ -60,3 +60,13 @@ class LocationForm(FlaskForm):
     mailing_postal_code = StringField("Mailing Postal Code")
     comments = TextAreaField("Comments")
     submit = SubmitField("Save Location")
+
+
+# Form - Change User Role
+class ChangeUserRoleForm(FlaskForm):
+    """Change user role form"""
+
+    role = SelectField("Role", choices=[("user", "user"),
+                                        ("super user", "super user"),
+                                        ("admin", "admin")])
+    submit = SubmitField("Change Role")
