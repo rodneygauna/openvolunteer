@@ -23,6 +23,7 @@ from flask_login import (
 from flask_mail import Message
 from users.forms import (
     RegisterUserForm,
+    EditProfileForm,
     LoginForm,
     ChangePasswordForm,
     ShortCodeForm,
@@ -185,7 +186,7 @@ def logout():
                 methods=['GET', 'POST'])
 @login_required
 def user_profile(first_name, last_name):
-    """Routes the current user to their profile page"""
+    """Routes to a user's profile page. This is public."""
     user = User.query.filter_by(
         first_name=first_name,
         last_name=last_name).first_or_404()
@@ -198,26 +199,23 @@ def user_profile(first_name, last_name):
 # Route - Edit User Account
 @users_bp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
-def edit_profile(user_id):
+def edit_profile():
     """Routes the current user to their profile page"""
-    user = User.query.get_or_404(user_id)
-    form = RegisterUserForm(obj=user)
-    if user != current_user:
-        return render_template("40X.html",
-                               title="OpenVolunteer - 403 Unauthorized",
-                               error_code="403"), 403
-    else:
-        if form.validate_on_submit():
-            form.populate_obj(user)
-            user.updated_by = current_user.id
-            user.updated_date = datetime.utcnow()
-            db.session.commit()
-            flash('Your account has been updated.', 'success')
-            return redirect(url_for('users.user_profile', user_id=user.id))
+    user = User.query.get_or_404(current_user.id)
+    form = EditProfileForm(obj=user)
+    if form.validate_on_submit():
+        form.populate_obj(user)
+        user.updated_by = current_user.id
+        user.updated_date = datetime.utcnow()
+        db.session.commit()
+        flash('Your account has been updated.', 'success')
+        return redirect(url_for('users.user_profile',
+                                first_name=user.first_name,
+                                last_name=user.last_name))
 
     return render_template('users/edit_profile.html',
-                           title='OpenVolunteer - Account',
-                           user=user)
+                           title='OpenVolunteer - Edit Profile',
+                           form=form, user=user)
 
 
 # Route - Change Password

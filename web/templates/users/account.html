@@ -1,3 +1,14 @@
 {% extends '_base.html' %}{% block content %}
-<h6>{{ user.first_name }} {{ user.last_name }}</h6>
+<div class="row g-4">
+  <div class="col-sm-12">
+    <div class="bg-light rounded h-100 p-4">
+      <h6 class="mb-4">{{ user.first_name }} {{ user.last_name }}</h6>
+      {% if current_user.id == user.id %}
+      <a href="{{ url_for('users.edit_profile') }}" class="btn btn-primary"
+        >Edit Profile</a
+      >
+      {% endif %}
+    </div>
+  </div>
+</div>
 {% endblock content %}

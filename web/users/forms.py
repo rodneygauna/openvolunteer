@@ -61,3 +61,14 @@ class ChangePasswordForm(FlaskForm):
                                                EqualTo("password")]
     )
     submit = SubmitField(label="Change Password")
+
+
+# Form - Edit Profile
+class EditProfileForm(FlaskForm):
+    """Edit Profile Form"""
+
+    first_name = StringField(label="First Name*", validators=[DataRequired()])
+    last_name = StringField(label="Last Name*", validators=[DataRequired()])
+    email = StringField(label="Email*", validators=[DataRequired(), Email()])
+    phone = StringField(label="Phone*", validators=[DataRequired()])
+    submit = SubmitField(label="Save Changes")
