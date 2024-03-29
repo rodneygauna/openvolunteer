@@ -114,21 +114,15 @@ def enter_code():
 @users_bp.route('/complete_login')
 def complete_login():
     """Completes the login process if the short code (2FA) is correct"""
-    # Variables
     stored_user_id = session.get('user_id')
     user = User.query.get_or_404(stored_user_id)
-    # Log the user in
-    if user:
-        login_user(user)
-        session.pop('short_code', None)
-        next_page = request.args.get('next')
-        if next_page is None or not next_page.startswith('/'):
-            next_page = url_for('core.index')
-        flash('Login successful.', 'success')
-        return redirect(next_page)
-    # If the user is not found, redirect to the login page
-    flash('Login failed.', 'warning')
-    return redirect(url_for('users.login'))
+    login_user(user)
+    session.pop('short_code', None)
+    next_page = request.args.get('next', default=url_for('core.index'))
+    if not next_page.startswith('/'):
+        next_page = url_for('core.index')
+    flash('Login successful.', 'success')
+    return redirect(next_page)
 
 
 # Logout user
