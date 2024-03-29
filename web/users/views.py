@@ -27,6 +27,7 @@ from users.forms import (
     LoginForm,
     ChangePasswordForm,
     ShortCodeForm,
+    RequestPasswordResetForm
 )
 from app import db, mail
 from .models import User
@@ -237,3 +238,61 @@ def change_password():
     return render_template('users/change_password.html',
                            title='OpenVolunteer - Change Password',
                            form=form)
+
+
+# Route - Forgot Password
+@users_bp.route('/forgot_password', methods=['GET', 'POST'])
+def forgot_password():
+    """Allows the user to request a password reset."""
+    request_password_reset_form = RequestPasswordResetForm()
+    short_code_form = ShortCodeForm()
+    change_password_form = ChangePasswordForm()
+
+    if request_password_reset_form.validate_on_submit():
+        user = User.query.filter_by(
+            email=request_password_reset_form.email.data).first()
+        if user:
+            short_code = str(randint(100000, 999999))
+            # Send the short code to the user's email
+            msg = Message(
+                'OpenVolunteer - Short Code for Password Reset',
+                recipients=[user.email],
+                sender="donotreply@openvolunteer.com")
+            msg.body = f"""
+You're receiving this email because you requested a password reset for your OpenVolunteer account.
+Use this short code to reset your password: {short_code}
+            """
+            mail.send(msg)
+            # Store the short code in the session
+            session['short_code'] = short_code
+            session['user_id'] = user.id
+            flash(
+                'An email has been sent to you with instructions to reset your password.', 'success')
+            return render_template('users/forgot_password_reset_code.html',
+                                   title='OpenVolunteer - Short Code (2FA)',
+                                   form=short_code_form)
+
+    if short_code_form.validate_on_submit():
+        entered_code = short_code_form.short_code.data
+        stored_code = session.get('short_code')
+        if entered_code == stored_code:
+            return render_template('users/change_password.html',
+                                   title='OpenVolunteer - Change Password',
+                                   form=change_password_form)
+        else:
+            flash('The code you entered is incorrect. Please try again.', 'warning')
+
+    if change_password_form.validate_on_submit():
+        user_id = session.get('user_id')
+        user = User.query.get(user_id)
+        user.password_hash = generate_password_hash(
+            change_password_form.password.data)
+        db.session.commit()
+        flash('Your password has been updated.', 'success')
+        return redirect(url_for('users.login'))
+
+    return render_template('users/forgot_password.html',
+                           title='OpenVolunteer - Forgot Password',
+                           request_password_reset_form=request_password_reset_form,
+                           short_code_form=short_code_form,
+                           change_password_form=change_password_form)

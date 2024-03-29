@@ -72,3 +72,11 @@ class EditProfileForm(FlaskForm):
     email = StringField(label="Email*", validators=[DataRequired(), Email()])
     phone = StringField(label="Phone*", validators=[DataRequired()])
     submit = SubmitField(label="Save Changes")
+
+
+# Form - Request Password Reset
+class RequestPasswordResetForm(FlaskForm):
+    """Request Password Reset Form"""
+
+    email = StringField(label="Email*", validators=[DataRequired(), Email()])
+    submit = SubmitField(label="Request Password Reset")
