@@ -15,7 +15,7 @@ from users.forms import (
     ChangePasswordForm, ShortCodeForm, RequestPasswordResetForm
 )
 from app import db, mail
-from .models import User
+from .models import User, LoginHistory
 
 
 # Blueprint Configuration
@@ -34,6 +34,21 @@ def send_email(subject, recipient, body):
 def generate_short_code():
     """Generates a random 6-digit short code for 2FA or password reset."""
     return str(randint(100000, 999999))
+
+
+def log_user_login(user_id, user_email, status, comments):
+    """Logs a user's login attempt"""
+    ip_address = request.access_route[0] if request.access_route else request.remote_addr
+    log_login = LoginHistory(
+        user_id=user_id,
+        user_email=user_email,
+        login_status=status,
+        login_comments=comments,
+        login_date=datetime.utcnow(),
+        ip_address=ip_address
+    )
+    db.session.add(log_login)
+    db.session.commit()
 
 
 # Register User
@@ -72,19 +87,26 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user is None or not user.check_password(form.password.data):
+            log_user_login(user.id if user else None, form.email.data,
+                           'failed', 'Invalid email or password')
             flash('Login failed. Please check your email and password.',
                   'warning')
             return redirect(url_for('users.login'))
-        if user.status == 'INACTIVE':
+        elif user.status == 'INACTIVE':
+            log_user_login(user.id, user.email, 'failed',
+                           'Account is inactive')
             flash('Your account is inactive. Please contact an administrator.',
                   'warning')
             return redirect(url_for('users.login'))
+
+        log_user_login(user.id, user.email, 'success', 'Login successful')
         short_code = generate_short_code()
         send_email('OpenVolunteer - Short Code for Login',
                    user.email, f'Your short code is: {short_code}')
         session['short_code'] = short_code
         session['user_id'] = user.id
         return redirect(url_for('users.enter_code'))
+
     return render_template('users/login.html', title='OpenVolunteer - Login',
                            form=form)
 

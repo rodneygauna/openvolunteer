@@ -56,3 +56,18 @@ class User(db.Model, UserMixin):
     def is_superuser_admin(self):
         """Checks if the user is a superuser"""
         return self.role in ["super user", "admin"]
+
+
+# Model - Login History
+class LoginHistory(db.Model):
+    """Login history model"""
+
+    __tablename__ = "login_history"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    user_email = db.Column(db.String(255))
+    login_date = db.Column(db.DateTime, default=datetime.utcnow())
+    login_status = db.Column(db.String(255), nullable=False)
+    login_comments = db.Column(db.String(255))
+    ip_address = db.Column(db.String(255))
