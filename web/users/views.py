@@ -67,6 +67,7 @@ def register_user():
             email=form.email.data,
             phone=form.phone.data,
             password_hash=generate_password_hash(form.password.data),
+            created_date=datetime.utcnow()
         )
         if check_if_first_user is None:
             user.role = "admin"
@@ -202,6 +203,8 @@ def change_password():
     form = ChangePasswordForm()
     if form.validate_on_submit():
         user.password_hash = generate_password_hash(form.password.data)
+        user.updated_by = current_user.id
+        user.updated_date = datetime.utcnow()
         db.session.commit()
         flash('Your password has been updated.', 'success')
         return redirect(url_for('users.user_profile',
@@ -255,6 +258,8 @@ def forgot_change_password():
     if form.validate_on_submit():
         user = User.query.get(session.get('user_id'))
         user.password_hash = generate_password_hash(form.password.data)
+        user.updated_by = user.id
+        user.updated_date = datetime.utcnow()
         db.session.commit()
         flash('Your password has been updated.', 'success')
         return redirect(url_for('users.login'))
