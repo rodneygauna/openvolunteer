@@ -41,14 +41,6 @@ class User(db.Model, UserMixin):
     updated_by = db.Column(db.Integer)
     updated_date = db.Column(db.DateTime)
 
-    def __init__(self, first_name, last_name, email, phone, password_hash):
-        """Initializes the user"""
-        self.first_name = first_name
-        self.last_name = last_name
-        self.email = email
-        self.phone = phone
-        self.password_hash = password_hash
-
     def check_password(self, password):
         """Checks if the password is correct"""
         return check_password_hash(self.password_hash, password)
