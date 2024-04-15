@@ -118,14 +118,21 @@ def enter_code():
     """Validates the short code (2FA) and completes the login process"""
     form = ShortCodeForm()
     if form.validate_on_submit():
+        stored_user_id = session.get('user_id')
+        user = User.query.get_or_404(stored_user_id)
         entered_code = form.short_code.data
         stored_code = session.get('short_code')
         if not stored_code:
+            log_user_login(user.id, user.email, 'failed',
+                           'short code not found')
             flash('No short code found. Please log in again.', 'warning')
             return redirect(url_for('users.login'))
         if entered_code == stored_code:
+            log_user_login(user.id, user.email, 'success', '2FA successful')
             return redirect(url_for('users.complete_login'))
         else:
+            log_user_login(user.id, user.email, 'failed',
+                           'short code incorrect')
             flash('Short Code (2FA) is incorrect. '
                   'Please try again.', 'warning')
     return render_template('users/short_code.html',
