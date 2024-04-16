@@ -165,12 +165,14 @@ def logout():
 
 
 # Route - User Account
-@users_bp.route('/account/@<string:first_name>-<string:last_name>',
-                methods=['GET', 'POST'])
+@users_bp.route(
+    '/account/@<int:user_id>-<string:first_name>-<string:last_name>',
+    methods=['GET', 'POST'])
 @login_required
-def user_profile(first_name, last_name):
+def user_profile(user_id, first_name, last_name):
     """Routes to a user's profile page. This is public."""
     user = User.query.filter_by(
+        id=user_id,
         first_name=first_name,
         last_name=last_name).first_or_404()
     return render_template('users/account.html',
@@ -192,6 +194,7 @@ def edit_profile():
         db.session.commit()
         flash('Your account has been updated.', 'success')
         return redirect(url_for('users.user_profile',
+                                user_id=user.id,
                                 first_name=user.first_name,
                                 last_name=user.last_name))
     return render_template('users/edit_profile.html',

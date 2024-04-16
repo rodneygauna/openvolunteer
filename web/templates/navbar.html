@@ -30,7 +30,7 @@
         class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0"
       >
         <a
-          href="{{ url_for('users.user_profile', first_name=current_user.first_name, last_name=current_user.last_name) }}"
+          href="{{ url_for('users.user_profile', user_id=current_user.id, first_name=current_user.first_name, last_name=current_user.last_name) }}"
           class="dropdown-item"
           ><i class="fa fa-user me-2"></i>Profile</a
         >
