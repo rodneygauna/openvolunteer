@@ -22,7 +22,8 @@
           <th scope="col">Event Title</th>
           <th scope="col">Event Date</th>
           <th scope="col">Event Time</th>
-          <th scope="col">Status</th>
+          <th scope="col">Event Status</th>
+          <th scope="col">Signup Status</th>
           <th scope="col">Action</th>
         </thead>
         <tbody>
@@ -36,6 +37,7 @@
             <td>{{ e.start_date.strftime('%A, %B %d, %Y') }}</td>
             <td>{{ e.start_time.strftime('%I:%M %p') }} {{ e.start_timezone }}</td>
             <td>{{ e.event_status }}</td>
+            <td>{{ e.attendee_status }}</td>
             <td>
               <div class="btn-group" role="group">
                 <a
