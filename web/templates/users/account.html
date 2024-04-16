@@ -13,4 +13,57 @@
     </div>
   </div>
 </div>
+<div class="row g-1">
+  <div class="col-sm-12">
+    <div class="bg-light rounded h-100 p-4">
+      <h6 class="mb-4">Events</h6>
+      <table class="table table-striped">
+        <thead>
+          <th scope="col">Event Title</th>
+          <th scope="col">Event Date</th>
+          <th scope="col">Event Time</th>
+          <th scope="col">Status</th>
+          <th scope="col">Action</th>
+        </thead>
+        <tbody>
+          {% if events %}
+          {% for e in events %}
+          <tr>
+            <td scope="row"><a
+                  href="{{ url_for('events.event', event_id=e.id) }}"
+                  >{{ e.title }}</a
+                ></td>
+            <td>{{ e.start_date.strftime('%A, %B %d, %Y') }}</td>
+            <td>{{ e.start_time.strftime('%I:%M %p') }} {{ e.start_timezone }}</td>
+            <td>{{ e.event_status }}</td>
+            <td>
+              <div class="btn-group" role="group">
+                <a
+                  href="{{ url_for('events.event', event_id=e.id) }}"
+                  class="btn btn-primary btn-sm"
+                  >View Event</a
+                >
+                {% if current_user.id == user.id %}
+                {% if e.event_status != "closed", "canceled" %}
+                <a
+                  href="{{ url_for('events.event_signup', event_id=e.id) }}"
+                  class="btn btn-outline-primary btn-sm"
+                  >Edit Signup</a
+                >
+                {% endif %}
+                {% endif %}
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+          {% else %}
+          <tr>
+            <td colspan="5">{{ user.first_name }} hasn't signed up for any events.</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 {% endblock content %}

@@ -15,6 +15,7 @@ from users.forms import (
     ChangePasswordForm, ShortCodeForm, RequestPasswordResetForm
 )
 from app import db, mail
+from reports.queries import user_events
 from .models import User, LoginHistory
 
 
@@ -175,9 +176,10 @@ def user_profile(user_id, first_name, last_name):
         id=user_id,
         first_name=first_name,
         last_name=last_name).first_or_404()
+    events = user_events(user_id)
     return render_template('users/account.html',
                            title='OpenVolunteer - Account',
-                           user=user)
+                           user=user, events=events)
 
 
 # Route - Edit User Account
