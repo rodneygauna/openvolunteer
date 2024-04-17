@@ -5,6 +5,7 @@ from app import db
 from notifications.models import Notification
 from events.models import Event
 from users.models import User
+from settings.models import Organization
 
 
 # Query - Get 5 most recent notifications
@@ -104,3 +105,12 @@ def get_total_event_hours():
         total_hours += duration.total_seconds() / 3600
 
     return total_hours
+
+
+# Query - Get organization details
+def get_organization_details():
+    """Get organization details"""
+
+    organization = Organization.query.first()
+
+    return organization
