@@ -16,6 +16,7 @@ from users.forms import (
 )
 from app import db, mail
 from reports.queries import user_events
+from waivers.models import Waiver, WaiverAgreement
 from .models import User, LoginHistory
 
 
@@ -143,15 +144,26 @@ def enter_code():
 
 # Route - Complete Login
 @users_bp.route('/complete_login')
+# Route - Complete Login
+@users_bp.route('/complete_login')
 def complete_login():
     """Completes the login process if the short code (2FA) is correct"""
-    stored_user_id = session.get('user_id')
-    user = User.query.get_or_404(stored_user_id)
-    login_user(user)
+    user = User.query.get_or_404(session.get('user_id'))
+    # Check if the user has a waiver to sign
+    active_waiver = Waiver.query.filter(
+        Waiver.active_date <= datetime.utcnow(),
+        Waiver.expiration_date > datetime.utcnow()
+    ).order_by(Waiver.active_date.desc()).first()
+    user_signed_waiver = WaiverAgreement.query.filter_by(
+        user_id=user.id,
+        waiver_id=active_waiver.id
+    ).first()
+    login_user(user, remember=True)
     session.pop('short_code', None)
-    next_page = request.args.get('next', default=url_for('core.index'))
-    if not next_page.startswith('/'):
-        next_page = url_for('core.index')
+    if not user_signed_waiver:
+        return redirect(url_for('waivers.view_sign_waiver',
+                                waiver_id=active_waiver.id))
+    next_page = request.args.get('next', url_for('core.index'))
     flash('Login successful.', 'success')
     return redirect(next_page)
 
