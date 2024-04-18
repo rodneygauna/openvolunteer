@@ -8,7 +8,6 @@ from users.admin_superuser import admin_required
 from .queries import get_waivers
 from .forms import WaiverForm, WaiverAgreementForm
 from .models import Waiver, WaiverAgreement
-from users.models import User
 
 
 # Blueprint - Settings - Waivers
