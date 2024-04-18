@@ -15,6 +15,7 @@ class Waiver(db.Model):
     expiration_date = db.Column(db.Date)
     version = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
+    signature_consent = db.Column(db.Text, default=False)
     created_date = db.Column(db.DateTime, default=datetime.utcnow())
     created_by = db.Column(
         db.Integer, db.ForeignKey("users.id"), nullable=False)
@@ -32,3 +33,6 @@ class WaiverAgreement(db.Model):
     waiver_id = db.Column(db.Integer, db.ForeignKey("waivers.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     agreement_date = db.Column(db.DateTime, default=datetime.utcnow())
+    signee_first_name = db.Column(db.String(255), nullable=False)
+    signee_last_name = db.Column(db.String(255), nullable=False)
+    signee_date_of_birth = db.Column(db.Date, nullable=False)
