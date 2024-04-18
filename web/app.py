@@ -51,4 +51,4 @@ app.register_blueprint(settings_bp)
 
 # Main run script
 if __name__ == '__main__':
-    app.run()
+    app.run(ssl_context=BaseConfig.SSL_CONTEXT)

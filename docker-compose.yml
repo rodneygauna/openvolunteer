@@ -1,13 +1,12 @@
-version: "3.8"
-
 services:
   nginx:
     restart: always
     build: ./nginx
     ports:
-      - "80:80"
+      - "443:443"
     volumes:
       - ./web/static:/static
+      - ssl_volume:/etc/nginx/ssl/
     links:
       - web:web
 
@@ -28,13 +27,17 @@ services:
       MAIL_USER: ${MAIL_USER}
       MAIL_PASSWORD: ${MAIL_PASSWORD}
       SECRET_KEY: ${SECRET_KEY}
+      SSL_CERT_PATH: ${SSL_CERT_PATH}
+      SSL_KEY_PATH: ${SSL_KEY_PATH}
+    volumes:
+      - ssl_volume:/ssl
     expose:
-      - "8000"
+      - "443:8000"
     depends_on:
       - postgres
     command: >
       sh -c "python3 ./create_db.py &&
-             gunicorn -w 2 -b :8000 app:app"
+             gunicorn -w 2 -b :443 app:app --certfile ${SSL_CERT_PATH} --keyfile ${SSL_KEY_PATH}"
     develop:
       watch:
         - action: sync+restart
@@ -58,4 +61,5 @@ services:
       - "5432:5432"
 
 volumes:
+  ssl_volume:
   db-data: {}

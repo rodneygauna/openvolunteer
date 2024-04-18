@@ -24,3 +24,7 @@ class BaseConfig(object):
     MAIL_PASSWORD = os.environ['MAIL_PASSWORD']
     # Encryption key
     SECRET_KEY = os.environ['SECRET_KEY']
+    # SSL configuration
+    SSL_CERT_PATH = os.environ['SSL_CERT_PATH']
+    SSL_KEY_PATH = os.environ['SSL_KEY_PATH']
+    SSL_CONTEXT = (SSL_CERT_PATH, SSL_KEY_PATH)
