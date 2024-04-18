@@ -35,6 +35,7 @@ class User(db.Model, UserMixin):
     phone = db.Column(db.String(255), nullable=False)
     password_hash = db.Column(db.String(255))
     role = db.Column(db.String(255), default="user")
+    signoff_required = db.Column(db.Boolean, default=False)
     status = db.Column(db.String(255), default="active")
     created_by = db.Column(db.Integer)
     created_date = db.Column(db.DateTime, default=datetime.utcnow())
