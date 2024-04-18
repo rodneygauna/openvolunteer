@@ -6,56 +6,39 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="" name="keywords" />
     <meta content="" name="description" />
-
     <!-- Favicon -->
     {% include 'favicon.html' %}
-
     <!-- Google Web Fonts -->
     {% include 'google-fonts.html' %}
-
     <!-- Icon Font Stylesheet -->
     {% include 'icon-font-stylesheet.html' %}
-
     <!-- Stylesheets -->
     {% include 'styles.html' %}
   </head>
-
   <body>
     <div class="container-xxl position-relative bg-white d-flex p-0">
-      <!-- Spinner Start -->
+      <!-- Spinner -->
       {% include 'spinner.html' %}
-      <!-- Spinner End -->
-
-      <!-- Sidebar Start -->
+      <!-- Sidebar -->
       {% include 'sidebar.html' %}
-      <!-- Sidebar End -->
-
-      <!-- Content Start -->
       <div class="content">
-        <!-- Navbar Start -->
+        <!-- Navbar -->
         {% include 'navbar.html' %}
-        <!-- Navbar End -->
-        <!-- Main Start -->
         <div class="container-fluid pt-4 px-4">
-          <!-- Flash Start -->
+          <!-- Flash -->
           {% include 'flash.html' %}
-          <!-- Flash End -->
+          <!-- Content -->
           {% block content %} {% endblock content %}
         </div>
-        <!-- Main End -->
-
-        <!-- Footer Start -->
+        <!-- Footer -->
         {% include 'footer.html' %}
-        <!-- Footer End -->
       </div>
-      <!-- Content End -->
-
       <!-- Back to Top -->
       <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"
         ><i class="bi bi-arrow-up"></i
       ></a>
     </div>
-
+    <!-- JavaScript -->
     {% include 'javascript.html' %}
   </body>
 </html>
