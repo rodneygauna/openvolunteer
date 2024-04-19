@@ -1,0 +1,30 @@
+{% extends '_base.html' %} {% block content %}
+<div class="row g-4">
+  <div class="col-sm-12">
+    <div class="bg-light rounded h-100 p-4">
+      <h6 class="mb-4">Waiver Agreement</h6>
+      <form method="POST">
+        {{ form.hidden_tag() }}
+        <p>{{ waiver.content|safe }}</p>
+        <div class="mb-3">
+          {{ form.signee_first_name.label(class="form-label") }} {{
+          form.signee_first_name(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.signee_last_name.label(class="form-label") }} {{
+          form.signee_last_name(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.signee_date_of_birth.label(class="form-label") }} {{
+          form.signee_date_of_birth(class="form-control") }}
+        </div>
+        <p>{{ waiver.signature_consent|safe }}</p>
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for('users.logout') }}" class="btn btn-secondary"
+          >Cancel</a
+        >
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}

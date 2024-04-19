@@ -22,7 +22,7 @@ class WaiverForm(FlaskForm):
     content = TextAreaField("Content (HTML)",
                             render_kw={"rows": 20},
                             validators=[DataRequired()])
-    signature_consent = TextAreaField("Content (HTML)",
+    signature_consent = TextAreaField("Signature Consent (HTML)",
                                       render_kw={"rows": 10},
                                       validators=[DataRequired()])
     submit = SubmitField("Save")

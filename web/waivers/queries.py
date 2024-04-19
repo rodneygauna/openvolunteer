@@ -18,6 +18,8 @@ def get_waivers(waiver_id=None):
             Waiver.active_date,
             Waiver.expiration_date,
             Waiver.version,
+            Waiver.content,
+            Waiver.signature_consent,
             Waiver.created_date,
             Waiver.updated_date,
             created_by_user.first_name.label('created_by_first_name'),
@@ -27,6 +29,7 @@ def get_waivers(waiver_id=None):
         )
         .join(created_by_user, Waiver.created_by == created_by_user.id)
         .outerjoin(updated_by_user, Waiver.updated_by == updated_by_user.id)
+        .order_by(Waiver.id.desc())
     )
     if waiver_id is not None:
         return query.filter(Waiver.id == waiver_id).first()

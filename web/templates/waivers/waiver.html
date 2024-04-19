@@ -1,0 +1,56 @@
+{% extends '_base.html' %} {% block content %}
+<div class="row g-4">
+  <div class="col-sm-12">
+    <div class="bg-light rounded h-100 p-4">
+      <h6 class="mb-4">Waivers</h6>
+      <a
+        href="{{ url_for('waivers.edit_waiver', waiver_id=waiver.id) }}"
+        class="btn btn-primary"
+        >Edit Waiver</a
+      >
+      <div class="mt-4">
+        <p class="mb-2">Version</p>
+        <h6 class="mb-0">{{ waiver.version }}</h6>
+      </div>
+      <div class="mt-4">
+        <p class="mb-2">Date Range</p>
+        {% if waiver.expiration_date %}
+        <h6 class="mb-0">
+          {{ waiver.active_date.strftime('%A, %B %d, %Y') }} - {{
+          waiver.expiration_date.strftime('%A, %B %d, %Y') }}
+        </h6>
+        {% else %}
+        <h6 class="mb-0">
+          {{ waiver.active_date.strftime('%A, %B %d, %Y') }} - No expiration
+          date
+        </h6>
+        {% endif %}
+      </div>
+      <div class="mt-4">
+        <p class="mb-2">Created By and Date</p>
+        <h6 class="mb-0">
+          {{ waiver.created_by_first_name }} {{ waiver.created_by_first_name }}
+          ({{ waiver.created_date.strftime('%A, %B %d, %Y') }})
+        </h6>
+      </div>
+      {% if waiver.updated_date %}
+      <div class="mt-4">
+        <p class="mb-2">Updated By and Date</p>
+        <h6 class="mb-0">
+          {{ waiver.updated_by_first_name }} {{ waiver.updated_by_first_name }}
+          ({{ waiver.updated_date.strftime('%A, %B %d, %Y') }})
+        </h6>
+      </div>
+      {% endif %}
+      <div class="mt-4">
+        <p class="mb-2">Content</p>
+        <h6 class="mb-0">{{ waiver.content|safe }}</h6>
+      </div>
+      <div class="mt-4">
+        <p class="mb-2">Signature Consent</p>
+        <h6 class="mb-0">{{ waiver.signature_consent|safe }}</h6>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

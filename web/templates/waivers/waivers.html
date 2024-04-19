@@ -1,0 +1,57 @@
+{% extends '_base.html' %} {% block content %}
+<div class="row g-4">
+  <div class="col-sm-12">
+    <div class="bg-light rounded h-100 p-4">
+      <h6 class="mb-4">Waivers</h6>
+      <a href="{{ url_for('waivers.create_waiver') }}" class="btn btn-primary"
+        >Create a New Waiver</a
+      >
+      <table class="table table-striped">
+        <thead>
+          <th scope="col">Version</th>
+          <th scope="col">Active Date</th>
+          <th scope="col">Expiration Date</th>
+          <th scope="col">Created Date</th>
+          <th scope="col">Created By</th>
+          <th scope="col">Updated Date</th>
+          <th scope="col">Updated By</th>
+          <th scope="col">Action</th>
+        </thead>
+        <tbody>
+          {% if waivers %} {% for w in waivers %}
+          <tr>
+            <td scope="row">{{ w.version }}</td>
+            <td>{{ w.active_date.strftime('%A, %B %d, %Y') }}</td>
+            {% if w.expiration_date %}
+            <td>{{ w.expiration_date.strftime('%A, %B %d, %Y') }}</td>
+            {% else %}
+            <td></td>
+            {% endif %}
+            <td>{{ w.created_date.strftime('%A, %B %d, %Y') }}</td>
+            <td>{{ w.created_by_first_name }} {{ w.created_by_last_name }}</td>
+            {% if w.updated_date %}
+            <td>{{ w.updated_date.strftime('%A, %B %d, %Y') }}</td>
+            <td>{{ w.updated_by_first_name }} {{ w.updated_by_first_name }}</td>
+            {% else %}
+            <td></td>
+            <td></td>
+            {% endif %}
+            <td>
+              <a
+                href="{{ url_for('waivers.edit_waiver', waiver_id=w.id) }}"
+                class="btn btn-primary btn-sm"
+                >Edit</a
+              >
+            </td>
+          </tr>
+          {% endfor %} {% else %}
+          <tr>
+            <td colspan="8">No waivers found</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock content %}

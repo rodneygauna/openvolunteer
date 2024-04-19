@@ -15,7 +15,7 @@ waiver_bp = Blueprint('waivers', __name__)
 
 
 # Waiver - View All Waivers
-@waiver_bp.route('settings/waivers', methods=['GET'])
+@waiver_bp.route('/settings/waivers', methods=['GET'])
 @login_required
 @admin_required
 def view_waivers():
@@ -25,7 +25,7 @@ def view_waivers():
 
 
 # Waiver - Settings - View Waiver
-@waiver_bp.route('settings/waivers/<int:waiver_id>',
+@waiver_bp.route('/settings/waivers/<int:waiver_id>',
                  methods=['GET'])
 @login_required
 @admin_required
@@ -36,7 +36,7 @@ def view_waiver(waiver_id):
 
 
 # Waiver - Settings - Create Waiver
-@waiver_bp.route('settings/waivers/create',
+@waiver_bp.route('/settings/waivers/create',
                  methods=['GET', 'POST'])
 @login_required
 @admin_required
@@ -51,12 +51,12 @@ def create_waiver():
         db.session.add(waiver)
         db.session.commit()
         flash('Waiver created successfully.', 'success')
-        return redirect(url_for('waivers.view_waiver'))
+        return redirect(url_for('waivers.view_waivers'))
     return render_template('waivers/waiver_form.html', form=form)
 
 
 # Waiver - Settings - Edit Waiver
-@waiver_bp.route('settings/waivers/edit/<int:waiver_id>',
+@waiver_bp.route('/settings/waivers/edit/<int:waiver_id>',
                  methods=['GET', 'POST'])
 @login_required
 @admin_required
@@ -75,7 +75,7 @@ def edit_waiver(waiver_id):
 
 
 # Waiver - User Login - View and Sign Waiver
-@waiver_bp.route('waivers/<int:waiver_id>',
+@waiver_bp.route('/waivers/<int:waiver_id>',
                  methods=['GET', 'POST'])
 @login_required
 def view_sign_waiver(waiver_id):
@@ -91,6 +91,6 @@ def view_sign_waiver(waiver_id):
         db.session.add(waiver_agreement)
         db.session.commit()
         flash('Waiver signed successfully.', 'success')
-        return redirect(url_for('waivers.view_waiver', waiver_id=waiver.id))
+        return redirect(url_for('core.index'))
     return render_template('waivers/waiver_agreement.html', form=form,
                            waiver=waiver)

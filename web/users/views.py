@@ -144,16 +144,15 @@ def enter_code():
 
 # Route - Complete Login
 @users_bp.route('/complete_login')
-# Route - Complete Login
-@users_bp.route('/complete_login')
 def complete_login():
     """Completes the login process if the short code (2FA) is correct"""
     user = User.query.get_or_404(session.get('user_id'))
-    # Check if the user has a waiver to sign
     active_waiver = Waiver.query.filter(
         Waiver.active_date <= datetime.utcnow(),
         Waiver.expiration_date > datetime.utcnow()
-    ).order_by(Waiver.active_date.desc()).first()
+    ).order_by(Waiver.active_date.asc()).first()
+    if active_waiver is None:
+        return redirect(url_for('core.index'))
     user_signed_waiver = WaiverAgreement.query.filter_by(
         user_id=user.id,
         waiver_id=active_waiver.id
