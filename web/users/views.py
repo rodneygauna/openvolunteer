@@ -152,6 +152,8 @@ def complete_login():
         Waiver.expiration_date > datetime.utcnow()
     ).order_by(Waiver.active_date.asc()).first()
     if active_waiver is None:
+        login_user(user, remember=True)
+        session.pop('short_code', None)
         return redirect(url_for('core.index'))
     user_signed_waiver = WaiverAgreement.query.filter_by(
         user_id=user.id,
