@@ -1,0 +1,47 @@
+{% extends '_base.html' %} {% block content %}
+<h1>Report</h1>
+<div class="row">
+  <p>
+    Report Type: {{ selected_report }}
+    <br />
+    Report Start Date: {{ start_date }}
+    <br />
+    Report End Date: {{ end_date }}
+  </p>
+</div>
+<div class="row">
+  <form method="post" action="{{ url_for('reports.export_csv') }}">
+    <input type="hidden" name="selected_report" value="{{ selected_report }}" />
+    {% for key, value in params.items() %}
+    <input type="hidden" name="{{ key }}" value="{{ value }}" />
+    {% endfor %}
+    <button type="submit" id="download-csv">
+      <i class="fe fe-download"></i> Export to CSV
+    </button>
+  </form>
+</div>
+<div class="row">
+  <table class="u-full-width">
+    <thead>
+      <tr>
+        {% for column in column_labels %}
+        <th>{{ column }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% if report_data %} {% for row in report_data %}
+      <tr>
+        {% for cell in row %}
+        <td>{{ cell }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %} {% else %}
+      <tr>
+        <td colspan="{{ column_count }}">No data available</td>
+        {% endif %}
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endblock content %}

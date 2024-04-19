@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, inspect
 from sqlalchemy.exc import OperationalError
 from app import db, app
 
-time.sleep(10)
+time.sleep(5)
 
 
 with app.app_context():

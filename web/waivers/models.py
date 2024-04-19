@@ -32,7 +32,7 @@ class WaiverAgreement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     waiver_id = db.Column(db.Integer, db.ForeignKey("waivers.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    agreement_date = db.Column(db.DateTime, default=datetime.utcnow())
+    agreement_date = db.Column(db.Date, default=datetime.utcnow())
     signee_first_name = db.Column(db.String(255), nullable=False)
     signee_last_name = db.Column(db.String(255), nullable=False)
     signee_date_of_birth = db.Column(db.Date, nullable=False)

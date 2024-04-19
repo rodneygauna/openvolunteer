@@ -17,6 +17,9 @@
         ><i class="fa fa-calendar me-2"></i>Events</a
       >
       {% if current_user.is_superuser_admin() %}
+      <a href="{{ url_for('reports.generate_report') }}" class="nav-item nav-link"
+        ><i class="fa fa-chart-line me-2"></i>Reports</a
+      >
       <div class="nav-item dropdown">
         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
           ><i class="fa fa-cog me-2"></i>Settings</a

@@ -1,0 +1,43 @@
+{% extends '_base.html' %} {% block content %}
+<h1>Generate Reports</h1>
+<form method="post">
+  {{ form.hidden_tag() }}
+  <div class="row">
+    <div class="u-full-width">
+      {{ form.report_options.label }} {{ form.report_options() }}
+    </div>
+  </div>
+  <!-- Date range fields -->
+  <div class="row" id="dateRanges">
+    <div class="six columns">
+      {{ form.start_date.label }} {{ form.start_date(class="u-full-width") }}
+    </div>
+    <div class="six columns">
+      {{ form.end_date.label }} {{ form.end_date(class="u-full-width") }}
+    </div>
+  </div>
+  <!-- Waiver Signee fields -->
+  <div class="row hidden" id="waiver_id">
+    <div class="u-full-width">
+      {{ form.waiver_id.label }} {{ form.waiver_id() }}
+    </div>
+  {{ form.submit() }}
+</form>
+
+<!-- Javascript for Reports-->
+<script>
+    // Global Variables
+    const reportOptions = document.getElementById("report_options");
+    const reportOptionsValue = reportOptions.value;
+    const dateRanges = document.getElementById("dateRanges");
+    const waiver_id = document.getElementById("waiver_id");
+
+    reportOptions.addEventListener("change", (e) => {
+        if (e.target.value === "Waiver Signees") {
+            dateRanges.style.display = "hidden";
+            waiver_id.style.display = "block";
+        }
+    });
+</script>
+
+{% endblock %}
