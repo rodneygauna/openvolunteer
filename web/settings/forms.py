@@ -8,8 +8,8 @@ from wtforms.validators import DataRequired
 from events.dictionary import TIMEZONES
 
 
-# Form - Create/Edit Organization
-class OrganizationForm(FlaskForm):
+# Form - Create/Edit Foundation
+class FoundationForm(FlaskForm):
     """Create/Edit organization form"""
 
     name = StringField("Name", validators=[DataRequired()])

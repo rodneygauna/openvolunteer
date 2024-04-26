@@ -4,9 +4,9 @@ from datetime import datetime
 from app import db
 
 
-# Model - Organization
-class Organization(db.Model):
-    """Organization model"""
+# Model - Foundation
+class Foundation(db.Model):
+    """Foundation model"""
 
     __tablename__ = "organizations"
 

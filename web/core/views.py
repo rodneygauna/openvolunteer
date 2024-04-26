@@ -9,7 +9,7 @@ from .queries import (
     get_active_events_count,
     get_active_notifications_count,
     get_total_event_hours,
-    get_organization_details
+    get_foundation_details
 )
 
 
@@ -22,8 +22,8 @@ core_bp = Blueprint('core', __name__)
 def index():
     """Home page"""
 
-    # Organization Name
-    organization_name = get_organization_details()
+    # Foundation Name
+    foundation_name = get_foundation_details()
 
     # Upcoming Events
     upcoming_events = get_upcoming_events()
@@ -45,4 +45,4 @@ def index():
                            events_count=events_count,
                            notifications_count=notifications_count,
                            event_hours_count=event_hours_count,
-                           organization_name=organization_name)
+                           foundation_name=foundation_name)

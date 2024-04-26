@@ -11,48 +11,49 @@ from users.admin_superuser import admin_required, superuser_required
 from users.models import User
 from app import db, mail
 from .queries import get_users
-from .forms import (OrganizationForm, DefaultPreferenceForm, LocationForm,
+from .forms import (FoundationForm, DefaultPreferenceForm, LocationForm,
                     ChangeUserRoleForm)
-from .models import Organization, DefaultPreference, Location
+from .models import Foundation, DefaultPreference, Location
 
 
 # Blueprint
 settings_bp = Blueprint("settings", __name__, url_prefix="/settings")
 
 
-# Route - View Organization
-@settings_bp.route("/organization", methods=["GET"])
+# Route - View Foundation
+@settings_bp.route("/foundation", methods=["GET"])
 @login_required
 @admin_required
-def view_organization():
-    """View organization details."""
-    organization = Organization.query.first()
-    return render_template("settings/organization.html",
-                           organization=organization)
+def view_foundation():
+    """View foundation details."""
+    foundation = Foundation.query.first()
+    return render_template("settings/foundation.html",
+                           foundation=foundation)
 
 
-# Route - Create/Edit Organization
+# Route - Create/Edit Foundation
 
-@settings_bp.route("/organization/create", methods=["GET", "POST"])
+@settings_bp.route("/foundation/create", methods=["GET", "POST"])
 @login_required
 @admin_required
-def create_organization():
-    """Create or edit organization details."""
-    organization = Organization.query.first()
-    form = OrganizationForm(obj=organization)
+def create_foundation():
+    """Create or edit foundation details."""
+    foundation = Foundation.query.first()
+    form = FoundationForm(obj=foundation)
     if form.validate_on_submit():
-        if organization:
-            form.populate_obj(organization)
+        if foundation:
+            form.populate_obj(foundation)
         else:
-            organization = Organization()
-            form.populate_obj(organization)
-            organization.created_by = current_user.id
-            organization.updated_date = datetime.utcnow()
-            organization.updated_by = current_user.id
-            db.session.add(organization)
+            foundation = Foundation()
+            form.populate_obj(foundation)
+            foundation.created_by = current_user.id
+            foundation.updated_date = datetime.utcnow()
+            foundation.updated_by = current_user.id
+            db.session.add(foundation)
         db.session.commit()
-        return redirect(url_for("settings.view_organization"))
-    return render_template("settings/organization_form.html", form=form)
+        return redirect(url_for("settings.view_foundation"))
+    return render_template("settings/foundation_form.html",
+                           form=form)
 
 
 # Route - View Default Preferences

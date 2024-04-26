@@ -5,7 +5,7 @@ from app import db
 from notifications.models import Notification
 from events.models import Event
 from users.models import User
-from settings.models import Organization
+from settings.models import Foundation
 
 
 # Query - Get 5 most recent notifications
@@ -108,9 +108,9 @@ def get_total_event_hours():
 
 
 # Query - Get organization details
-def get_organization_details():
-    """Get organization details"""
+def get_foundation_details():
+    """Get foundation details"""
 
-    organization = Organization.query.first()
+    foundation = Foundation.query.first()
 
-    return organization
+    return foundation

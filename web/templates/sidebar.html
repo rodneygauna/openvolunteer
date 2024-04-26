@@ -17,7 +17,9 @@
         ><i class="fa fa-calendar me-2"></i>Events</a
       >
       {% if current_user.is_superuser_admin() %}
-      <a href="{{ url_for('reports.generate_report') }}" class="nav-item nav-link"
+      <a
+        href="{{ url_for('reports.generate_report') }}"
+        class="nav-item nav-link"
         ><i class="fa fa-chart-line me-2"></i>Reports</a
       >
       <div class="nav-item dropdown">
@@ -26,9 +28,9 @@
         >
         <div class="dropdown-menu bg-transparent border-0">
           <a
-            href="{{ url_for('settings.view_organization') }}"
+            href="{{ url_for('settings.view_foundation') }}"
             class="dropdown-item"
-            >Organization</a
+            >Foundation</a
           >
           <a
             href="{{ url_for('settings.view_default_preferences') }}"
