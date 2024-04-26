@@ -8,7 +8,7 @@ from app import db
 class Foundation(db.Model):
     """Foundation model"""
 
-    __tablename__ = "organizations"
+    __tablename__ = "foundation"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, nullable=False)
