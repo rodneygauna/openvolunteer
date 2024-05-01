@@ -9,6 +9,10 @@
           {{ form.default_timezone.label(class="form-label") }} {{
           form.default_timezone(class="form-select mb-3") }}
         </div>
+        <div class="mb-3">
+          {{ form.enable_2fa(class="form-check-input") }} {{
+          form.enable_2fa.label(class="form-check-label") }}
+        </div>
         {{ form.submit(class="btn btn-primary") }}
       </form>
     </div>

@@ -39,7 +39,8 @@ class DefaultPreference(db.Model):
     __tablename__ = "default_preferences"
 
     id = db.Column(db.Integer, primary_key=True)
-    default_timezone = db.Column(db.String(255), default="UTC")
+    default_timezone = db.Column(db.String(255))
+    enable_2fa = db.Column(db.Boolean)
     created_date = db.Column(db.DateTime, default=datetime.utcnow())
     created_by = db.Column(
         db.Integer, db.ForeignKey("users.id"), nullable=False)

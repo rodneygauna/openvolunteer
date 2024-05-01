@@ -12,6 +12,20 @@
         <p class="mb-2">Default Timezone for Events</p>
         <h6 class="mb-0">{{ default_preferences.default_timezone }}</h6>
       </div>
+      <div class="mt-4">
+        <p class="mb-2">Two-Factor Authenication (2FA)</p>
+        {% if default_preferences.enable_2fa == True %}
+        <h6 class="mb-0">
+          Enabled - Users will receive a short code via email after successfully
+          logging in.
+        </h6>
+        {% else %}
+        <h6 class="mb-0">
+          Disabled - Users will not receive a short code via email after
+          successfully logging in.
+        </h6>
+        {% endif %}
+      </div>
     </div>
   </div>
 </div>

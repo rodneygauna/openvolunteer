@@ -3,7 +3,7 @@
 from flask_wtf import FlaskForm
 from wtforms import (
     SubmitField, SelectField, TextAreaField,
-    StringField)
+    StringField, BooleanField)
 from wtforms.validators import DataRequired
 from events.dictionary import TIMEZONES
 
@@ -36,6 +36,7 @@ class DefaultPreferenceForm(FlaskForm):
     default_timezone = SelectField("Default Timezone for Events",
                                    choices=TIMEZONES,
                                    validators=[DataRequired()])
+    enable_2fa = BooleanField("Enable Two-Factor Authentication")
     submit = SubmitField("Save Default Preferences")
 
 

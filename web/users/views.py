@@ -17,6 +17,7 @@ from users.forms import (
 from app import db, mail
 from reports.queries import user_events
 from waivers.models import Waiver, WaiverAgreement
+from settings.models import DefaultPreference
 from .models import User, LoginHistory
 
 
@@ -51,6 +52,14 @@ def log_user_login(user_id, user_email, status, comments):
     )
     db.session.add(log_login)
     db.session.commit()
+
+
+def is_2fa_enabled():
+    """Checks if 2FA is enabled"""
+    two_fa = DefaultPreference.query.first()
+    if not getattr(two_fa, 'enable_2fa', False):
+        return False
+    return True
 
 
 # Register User
@@ -103,12 +112,14 @@ def login():
             return redirect(url_for('users.login'))
 
         log_user_login(user.id, user.email, 'success', 'Login successful')
-        short_code = generate_short_code()
-        send_email('OpenVolunteer - Short Code for Login',
-                   user.email, f'Your short code is: {short_code}')
-        session['short_code'] = short_code
         session['user_id'] = user.id
-        return redirect(url_for('users.enter_code'))
+        if is_2fa_enabled():
+            short_code = generate_short_code()
+            send_email('OpenVolunteer - Short Code for Login',
+                       user.email, f'Your short code is: {short_code}')
+            session['short_code'] = short_code
+            return redirect(url_for('users.enter_code'))
+        return redirect(url_for('users.complete_login'))
 
     return render_template('users/login.html', title='OpenVolunteer - Login',
                            form=form)
@@ -153,14 +164,16 @@ def complete_login():
     ).order_by(Waiver.active_date.asc()).first()
     if active_waiver is None:
         login_user(user, remember=True)
-        session.pop('short_code', None)
+        if is_2fa_enabled():
+            session.pop('short_code', None)
         return redirect(url_for('core.index'))
     user_signed_waiver = WaiverAgreement.query.filter_by(
         user_id=user.id,
         waiver_id=active_waiver.id
     ).first()
     login_user(user, remember=True)
-    session.pop('short_code', None)
+    if is_2fa_enabled():
+        session.pop('short_code', None)
     if not user_signed_waiver:
         return redirect(url_for('waivers.view_sign_waiver',
                                 waiver_id=active_waiver.id))
